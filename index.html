@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bases de Datos No Relacionales - Ing. Cruz Enrique Garcia Ramos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+        }
+        .tab-active {
+            background-color: white;
+            color: #1d4ed8;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navegación -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-database text-blue-600 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-blue-900 uppercase italic">Programación: NoSQL</span>
+                </div>
+                <div class="hidden md:flex space-x-8 font-bold">
+                    <a href="#inicio" class="text-blue-600 hover:text-blue-800 transition">Inicio</a>
+                    <a href="#evaluacion" class="text-gray-500 hover:text-blue-600 transition">Evaluación</a>
+                    <a href="#temario" class="text-gray-500 hover:text-blue-600 transition">Temario</a>
+                    <a href="#diagnostico" class="text-gray-500 hover:text-blue-600 transition">Diagnóstico</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bienvenida / Hero -->
+    <header id="inicio" class="gradient-bg text-white py-20 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">Submódulo 2</span>
+                    <span class="bg-slate-700 text-blue-300 text-xs font-bold px-3 py-1 rounded-full border border-blue-500/30">8 Horas Semanales</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                    Arquitecturas de <br><span class="text-blue-400">Datos No Relacionales</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-yellow-300 font-bold mb-6 italic">
+                    Docente: Ing. Cruz Enrique Garcia Ramos
+                </p>
+                <p class="text-lg opacity-90 mb-8 leading-relaxed max-w-lg">
+                    Dominaremos <strong>MongoDB</strong> desde los fundamentos hasta la integración profesional en la nube para aplicaciones de alto rendimiento.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#temario" class="bg-white text-blue-900 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-gray-100 transition inline-block border border-blue-400">
+                        Ver Plan Detallado
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-3xl blur opacity-30"></div>
+                    <img src="https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=800&auto=format&fit=crop" 
+                         alt="Centro de Datos Moderno" 
+                         onerror="this.src='https://placehold.co/800x600/1e3a8a/ffffff?text=NoSQL+Database+Infrastructure'"
+                         class="relative rounded-3xl shadow-2xl w-full max-w-md border-2 border-white/10 object-cover h-80">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Evaluación -->
+    <section id="evaluacion" class="py-16 max-w-7xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Criterios Académicos</h2>
+        <p class="text-gray-600 mb-12 italic">Estructura de evaluación por parcial</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                <div class="text-4xl text-blue-600 bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-code"></i></div>
+                <h3 class="font-bold text-xl mb-2">40% Prácticas</h3>
+                <p class="text-gray-500 text-sm">Scripts de consulta y laboratorios en MongoDB Compass.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-lg border-2 border-blue-100 card-hover relative">
+                <div class="text-4xl text-indigo-600 bg-indigo-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-project-diagram"></i></div>
+                <h3 class="font-bold text-xl mb-2 text-blue-900">50% Proyecto</h3>
+                <p class="text-gray-600 text-sm leading-relaxed font-medium">
+                    Desarrollo de un sistema de información persistido en NoSQL.
+                </p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 card-hover">
+                <div class="text-4xl text-cyan-600 bg-cyan-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-check-double"></i></div>
+                <h3 class="font-bold text-xl mb-2">10% Asistencia</h3>
+                <p class="text-gray-500 text-sm">Participación activa y asistencia a laboratorios.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contexto Técnico -->
+    <section id="contexto" class="py-20 bg-slate-900 text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2 z-10">
+                    <h2 class="text-3xl font-bold mb-8 flex items-center">
+                        <span class="bg-blue-600 p-2 rounded-lg mr-4"><i class="fas fa-microchip text-white"></i></span>
+                        Soberanía Tecnológica y Big Data
+                    </h2>
+                    <div class="space-y-6 text-slate-300 leading-relaxed text-lg">
+                        <p>
+                            En un entorno global que genera petabytes de información diaria, los sistemas tradicionales SQL ya no son suficientes. El dominio de <strong>Bases de Datos No Relacionales</strong> es el diferenciador clave para un desarrollador senior.
+                        </p>
+                        <p>
+                            Con una intensidad de <strong>8 horas semanales</strong>, profundizaremos en la gestión de datos orientada a documentos, garantizando que el egresado sea capaz de diseñar arquitecturas escalables y resilientes en la nube.
+                        </p>
+                        <div class="p-6 bg-slate-800 rounded-2xl border-l-4 border-blue-500 backdrop-blur-sm">
+                            <p class="text-white italic font-semibold">
+                                "La eficiencia de una aplicación moderna depende de cómo modelamos su persistencia de datos."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 flex flex-col gap-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative group">
+                            <img src="https://images.unsplash.com/photo-1597733336794-12d05021d510?q=80&w=600&auto=format&fit=crop" 
+                                 alt="Centro de Datos con Servidores" 
+                                 onerror="this.src='https://placehold.co/600x400/0f172a/ffffff?text=Server+Racks'"
+                                 class="rounded-2xl shadow-2xl h-64 w-full object-cover border border-white/10">
+                            <div class="absolute bottom-4 left-4 text-xs font-bold uppercase tracking-widest bg-blue-600 px-2 py-1 rounded">Infraestructura</div>
+                        </div>
+                        <div class="relative group pt-10">
+                            <!-- Imagen para NoSQL Systems / Digital Network -->
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600" 
+                                 alt="Conexiones Digitales" 
+                                 onerror="this.src='https://placehold.co/600x400/0f172a/ffffff?text=Digital+Network'"
+                                 class="rounded-2xl shadow-2xl h-64 w-full object-cover border border-white/10">
+                            <div class="absolute bottom-4 left-4 text-xs font-bold uppercase tracking-widest bg-cyan-600 px-2 py-1 rounded">NoSQL Systems</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Temario Dinámico -->
+    <section id="temario" class="py-16 bg-gray-100 scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Plan de Estudios Extendido 📚</h2>
+                <p class="text-gray-600">Desglose secuencial de temas por parcial acorde a la carga horaria semanal</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap justify-center space-x-2 md:space-x-4 mb-8 bg-gray-200 p-1.5 rounded-2xl max-w-2xl mx-auto">
+                <button onclick="changePartial(1)" id="btn1" class="tab-active flex-1 py-3 px-4 rounded-xl transition text-sm font-bold uppercase">Parcial 1</button>
+                <button onclick="changePartial(2)" id="btn2" class="flex-1 py-3 px-4 rounded-xl transition text-sm font-bold uppercase text-gray-500 hover:bg-gray-300">Parcial 2</button>
+                <button onclick="changePartial(3)" id="btn3" class="flex-1 py-3 px-4 rounded-xl transition text-sm font-bold uppercase text-gray-500 hover:bg-gray-300">Parcial 3</button>
+            </div>
+
+            <!-- Contenidos -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+                
+                <!-- PARCIAL 1 -->
+                <div id="content1" class="p-8 animate-fadeIn">
+                    <div class="flex flex-col md:flex-row justify-between mb-8 items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-blue-900">Arquitectura y Operaciones Base</h3>
+                            <p class="text-blue-600 font-semibold italic">Módulo I: Fundamentos y Gestión de Documentos (Semanas 1-5)</p>
+                        </div>
+                        <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-xs font-bold uppercase mt-2 md:mt-0">Fase Inicial</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">I. Teoría de Sistemas Distribuidos</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">1.1</span> Teorema CAP (Consistencia, Disponibilidad y Partición).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">1.2</span> Tipologías NoSQL: Documental, Clave-Valor, Columnar y Grafos.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">1.3</span> Modelo ACID vs BASE y consistencia eventual.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">1.4</span> Formatos de Datos Modernos: BSON y estructuras JSON.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">II. Ecosistema de Trabajo</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">2.1</span> Despliegue de Clústeres en MongoDB Atlas (Multi-Cloud).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">2.2</span> Configuración de Seguridad: Whitelists e IAM.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-blue-600">2.3</span> Administración vía MongoDB Shell (mongosh) y Compass.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4 md:col-span-2">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">III. Laboratorio CRUD e Integridad</h4>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-green-600">3.1</span> Escritura: Operaciones insertOne e insertMany.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-green-600">3.2</span> Lectura: Operadores avanzados ($gt, $in, $elemMatch).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-green-600">3.3</span> Actualización: Atómicos, Modificadores de Arreglos y Upserts.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-green-600">3.4</span> Validación: Implementación de JSON Schema en colecciones.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PARCIAL 2 -->
+                <div id="content2" class="p-8 hidden animate-fadeIn">
+                    <div class="flex flex-col md:flex-row justify-between mb-8 items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-indigo-900">Agregación, Performance e Índices</h3>
+                            <p class="text-indigo-600 font-semibold italic">Módulo II: Procesamiento de Big Data y Optimización (Semanas 6-11)</p>
+                        </div>
+                        <span class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-xs font-bold uppercase mt-2 md:mt-0">Fase Avanzada</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">IV. Aggregation Framework (Deep Dive)</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">4.1</span> El Pipeline de Agregación: Stages ($match, $project, $group).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">4.2</span> Transformación: Descomposición de arreglos con $unwind.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">4.3</span> Uniones NoSQL: Relacionamiento de datos con $lookup.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">4.4</span> Búsqueda por Facetas (Faceted Search) y Acumuladores.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">V. Estrategias de Indexación</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">5.1</span> Índices Simples, Compuestos y Multillave.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">5.2</span> Índices TTL (Expiración) y Geoespaciales (Coordenadas).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-indigo-600">5.3</span> Índices de Texto Completo (Full Text Search).</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4 md:col-span-2 bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
+                            <h4 class="font-bold text-indigo-900 uppercase tracking-wider text-xs mb-3">VI. Performance & Profiling</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-3 bg-white rounded-xl shadow-sm">
+                                    <span class="font-bold block text-indigo-700">6.1 Explain Plan</span>
+                                    Optimización de escaneo y análisis de ejecución.
+                                </div>
+                                <div class="p-3 bg-white rounded-xl shadow-sm">
+                                    <span class="font-bold block text-indigo-700">6.2 Transactions</span>
+                                    Implementación de transacciones ACID multi-documento.
+                                </div>
+                                <div class="p-3 bg-white rounded-xl shadow-sm">
+                                    <span class="font-bold block text-indigo-700">6.3 Capped Colls</span>
+                                    Colecciones de tamaño fijo para logs y streaming.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PARCIAL 3 -->
+                <div id="content3" class="p-8 hidden animate-fadeIn">
+                    <div class="flex flex-col md:flex-row justify-between mb-8 items-start">
+                        <div>
+                            <h3 class="text-2xl font-bold text-emerald-900">Modelado y Conectividad .NET</h3>
+                            <p class="text-emerald-600 font-semibold italic">Módulo III: Implementación Profesional y Seguridad (Semanas 12-16)</p>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-xs font-bold uppercase mt-2 md:mt-0">Fase de Cierre</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">VII. Modelado de Datos Avanzado</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">7.1</span> Análisis de carga: Embedding vs Referencing (DBRef).</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">7.2</span> Patrones: Extended Reference, Outlier y Computed.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">7.3</span> Diseño basado en patrones de acceso a la aplicación.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">VIII. Desarrollo con C# y .NET</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">8.1</span> Configuración del MongoDB .NET Driver.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">8.2</span> Mapeo de Clases (POCO) y Serialización BSON.</li>
+                                <li class="flex items-start"><span class="font-bold mr-2 text-emerald-600">8.3</span> Integración de LINQ y Tipado Fuerte.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4 md:col-span-2">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider text-xs border-b pb-2">IX. Seguridad y Administración Final</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <ul class="space-y-2">
+                                    <li class="flex items-center"><span class="font-bold mr-2 text-emerald-500">9.1</span> Control de acceso basado en roles (RBAC).</li>
+                                    <li class="flex items-center"><span class="font-bold mr-2 text-emerald-500">9.2</span> Encriptación TLS/SSL y protección de datos.</li>
+                                </ul>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center"><span class="font-bold mr-2 text-emerald-500">9.3</span> Backup y Restore (mongodump / mongorestore).</li>
+                                    <li class="flex items-center"><span class="font-bold mr-2 text-emerald-500">9.4</span> Despliegue final de Aplicación Web Persistida.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Diagnóstico -->
+    <section id="diagnostico" class="py-16 bg-blue-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">Evaluación Diagnóstica 🧪</h2>
+                <p class="text-gray-600">Requerimientos de conocimientos previos</p>
+            </div>
+            
+            <div class="bg-white rounded-3xl shadow-lg p-8 border border-blue-100">
+                <div class="space-y-6">
+                    <div class="p-5 border-l-4 border-blue-500 bg-gray-50 rounded-r-2xl card-hover">
+                        <h4 class="font-bold text-blue-900 mb-1 flex items-center">
+                            <i class="fas fa-file-code mr-2 text-blue-500"></i> Sintaxis JSON / C#
+                        </h4>
+                        <p class="text-sm text-gray-600 italic">¿Dominas la estructura de clases y el formato de intercambio de datos JSON?</p>
+                    </div>
+
+                    <div class="p-5 border-l-4 border-indigo-500 bg-gray-50 rounded-r-2xl card-hover">
+                        <h4 class="font-bold text-indigo-900 mb-1 flex items-center">
+                            <i class="fas fa-columns mr-2 text-indigo-500"></i> Lógica de Conjuntos
+                        </h4>
+                        <p class="text-sm text-gray-600 italic">¿Comprendes cómo filtrar y agrupar colecciones de datos masivas?</p>
+                    </div>
+                </div>
+                <div class="mt-10 p-6 bg-blue-600 text-white rounded-2xl text-center">
+                    <p class="text-sm font-medium">Este diagnóstico sirve para nivelar los conceptos antes de abordar las arquitecturas NoSQL de alto nivel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center">
+        <p class="text-white font-bold text-lg mb-2">Especialidad en Programación</p>
+        <p class="text-sm mb-4 italic">Submódulo: Implementa Bases de Datos No Relacionales</p>
+        <p class="text-sm mb-4">Ing. Cruz Enrique Garcia Ramos</p>
+        <div class="flex justify-center space-x-6 mb-6">
+            <i class="fab fa-github text-xl hover:text-white transition cursor-pointer"></i>
+            <i class="fas fa-laptop-code text-xl hover:text-white transition cursor-pointer"></i>
+            <i class="fas fa-database text-xl hover:text-white transition cursor-pointer"></i>
+        </div>
+        <p class="text-xs uppercase tracking-widest">Excelencia en Arquitectura de Software</p>
+    </footer>
+
+    <script>
+        function changePartial(num) {
+            for(let i=1; i<=3; i++) {
+                const content = document.getElementById('content'+i);
+                if(content) content.classList.add('hidden');
+                
+                const btn = document.getElementById('btn'+i);
+                if(btn) {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('text-gray-500', 'hover:bg-gray-300');
+                }
+            }
+            const activeContent = document.getElementById('content'+num);
+            if(activeContent) activeContent.classList.remove('hidden');
+            
+            const activeBtn = document.getElementById('btn'+num);
+            if(activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('text-gray-500', 'hover:bg-gray-300');
+            }
+        }
+
+        window.onload = function() {
+            changePartial(1);
+        };
+    </script>
+</body>
+</html>
