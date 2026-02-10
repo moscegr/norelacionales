@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecciones Parcial I - NoSQL - Ing. Garcia Ramos</title>
+    <title>Parcial I - CBTis 134 - Ing. Garcia Ramos</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Iconos FontAwesome -->
@@ -11,7 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap');
         
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .font-mono { font-family: 'Fira Code', monospace; }
         
         .gradient-header {
@@ -23,19 +23,21 @@
         }
         
         .week-tab.active {
-            background-color: #2563eb;
-            color: white;
+            background-color: white;
+            color: #1d4ed8 !important;
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            font-weight: 800;
         }
 
         .code-container {
             background-color: #011627;
             position: relative;
+            border: 1px solid #1e293b;
         }
 
         .code-container::before {
-            content: "SINTAXIS MONGODB";
+            content: "LABORATORIO DE EJEMPLOS";
             position: absolute;
             top: 10px;
             right: 15px;
@@ -47,12 +49,13 @@
 
         .concept-badge {
             background: rgba(37, 99, 235, 0.1);
-            color: #2563eb;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
             text-transform: uppercase;
+            border: 1px solid rgba(37, 99, 235, 0.2);
         }
 
         .animate-content {
@@ -60,127 +63,202 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .theory-card strong { color: #1e40af; font-weight: 700; }
+        .example-box { border-left: 4px solid #3b82f6; background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
     <!-- Navegación -->
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <a href="index.html" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition">
-                    <i class="fas fa-arrow-left"></i>
-                    <span class="font-bold uppercase tracking-tighter">Panel Principal</span>
+                <a href="index.html" class="flex items-center space-x-2 text-blue-600 hover:text-blue-800 transition group">
+                    <i class="fas fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                    <span class="font-bold uppercase tracking-tighter text-sm">Inicio del Curso</span>
                 </a>
-                <div class="flex items-center space-x-4 italic">
-                    <span class="bg-blue-100 text-blue-700 text-[10px] font-black px-2 py-1 rounded-full uppercase">Conceptos Básicos NoSQL</span>
+                <div class="flex items-center space-x-3">
+                    <span class="bg-blue-600 text-white text-[10px] font-black px-2 py-1 rounded shadow-sm italic">CBTis 134</span>
+                    <span class="text-slate-400 font-bold text-xs uppercase tracking-widest hidden md:inline">Manual Pedagógico Dinámico</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Header Principal -->
-    <header class="gradient-header text-white py-12 px-4 text-center">
-        <div class="max-w-4xl mx-auto">
-            <span class="text-blue-400 font-bold uppercase tracking-widest text-xs mb-2 block">Implementación de Bases de Datos No Relacionales</span>
-            <h1 class="text-3xl md:text-5xl font-black mb-4">Módulo I: Fundamentos y Gestión</h1>
-            <p class="text-blue-200 text-lg opacity-80 italic">Especialidad en Programación • Ing. Cruz Enrique Garcia Ramos</p>
+    <!-- Header Lección -->
+    <header class="gradient-header text-white py-14 px-4 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight uppercase italic">Primer Parcial: Inmersión</h1>
+            <p class="text-blue-100 text-lg opacity-95 max-w-2xl mx-auto italic leading-snug">
+                Aprendiendo a gestionar la información en la era del Big Data: <span class="text-white font-bold underline">Flexibilidad, Rendimiento y Cloud</span>.
+            </p>
+        </div>
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <i class="fas fa-network-wired text-[25rem] absolute -bottom-20 -right-20"></i>
         </div>
     </header>
 
-    <!-- Selector de Semanas -->
-    <section class="max-w-7xl mx-auto px-4 -mt-8 relative z-20">
-        <div class="bg-white p-2 rounded-2xl shadow-xl flex flex-wrap justify-center gap-2 border border-slate-200">
-            <button onclick="switchWeek(1)" id="tab1" class="week-tab active flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center">
-                <span class="text-[10px] opacity-60">Semana</span>
-                <span>01</span>
+    <!-- Navegación Semanal (Tabs) -->
+    <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
+        <div class="bg-slate-200/60 backdrop-blur-xl p-1.5 rounded-2xl shadow-xl flex flex-wrap justify-center gap-1.5 border border-white/30">
+            <button onclick="switchWeek(1)" id="tab1" class="week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center">
+                <span class="opacity-60 text-[9px] mb-1 italic">I. Teoría</span>
+                <span>Semana 01</span>
             </button>
-            <button onclick="switchWeek(2)" id="tab2" class="week-tab bg-slate-50 text-slate-500 flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center hover:bg-slate-100">
-                <span class="text-[10px] opacity-60">Semana</span>
-                <span>02</span>
+            <button onclick="switchWeek(2)" id="tab2" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">II. Arquitectura</span>
+                <span>Semana 02</span>
             </button>
-            <button onclick="switchWeek(3)" id="tab3" class="week-tab bg-slate-50 text-slate-500 flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center hover:bg-slate-100">
-                <span class="text-[10px] opacity-60">Semana</span>
-                <span>03</span>
+            <button onclick="switchWeek(3)" id="tab3" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">III. Laboratorio</span>
+                <span>Semana 03</span>
             </button>
-            <button onclick="switchWeek(4)" id="tab4" class="week-tab bg-slate-50 text-slate-500 flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center hover:bg-slate-100">
-                <span class="text-[10px] opacity-60">Semana</span>
-                <span>04</span>
+            <button onclick="switchWeek(4)" id="tab4" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">IV. Optimización</span>
+                <span>Semana 04</span>
             </button>
-            <button onclick="switchWeek(5)" id="tab5" class="week-tab bg-slate-50 text-slate-500 flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center hover:bg-slate-100">
-                <span class="text-[10px] opacity-60">Semana</span>
-                <span>05</span>
+            <button onclick="switchWeek(5)" id="tab5" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">V. Evaluación</span>
+                <span>Semana 05</span>
             </button>
         </div>
     </section>
 
-    <!-- Área de Contenido -->
-    <main class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Contenedor Dinámico -->
+    <main class="max-w-7xl mx-auto px-4 py-12">
         <div id="week-content" class="animate-content">
-            <!-- Inyectado por JS -->
+            <!-- Se carga via JavaScript -->
         </div>
     </main>
 
-    <footer class="bg-slate-950 text-slate-500 py-10 px-4 text-center border-t border-slate-900">
-        <p class="text-white font-bold mb-1">Implementa Bases de Datos No Relacionales</p>
-        <p class="text-xs uppercase tracking-widest italic">CETis 134 • 4° Semestre • Grupo 4AP</p>
+    <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center border-t border-slate-900">
+        <div class="max-w-4xl mx-auto text-slate-400">
+            <p class="text-white font-bold text-lg mb-2 italic">Submódulo 2: Implementa Bases de Datos No Relacionales</p>
+            <p class="text-sm mb-6 uppercase tracking-widest font-medium">Ing. Cruz Enrique Garcia Ramos • CETis 134</p>
+            <div class="flex justify-center space-x-8 text-[10px] font-bold border-t border-slate-800 pt-8 uppercase tracking-tighter">
+                <span class="flex items-center"><i class="fas fa-microchip mr-2 text-blue-500"></i> ARQUITECTURA DISTRIBUIDA</span>
+                <span class="flex items-center"><i class="fas fa-users mr-2 text-blue-500"></i> GRUPO 4AP</span>
+                <span class="flex items-center"><i class="fas fa-clock mr-2 text-blue-500"></i> 8 HORAS/SEMANA</span>
+            </div>
+        </div>
     </footer>
 
     <script>
         const contentData = {
             1: {
-                title: "Introducción a Bases de Datos NoSQL",
-                theory: "Una <strong>Base de Datos</strong> es un conjunto de datos organizados para su uso. El <strong>SGBD</strong> es el software que nos permite gestionarlos. <br><br> En este curso pasamos del modelo relacional al <strong>NoSQL</strong> (Not Only SQL), diseñado para:<br> • <strong>Velocidad:</strong> Altas tasas de lectura/escritura. <br> • <strong>Escalabilidad:</strong> Crecimiento horizontal en múltiples servidores. <br> • <strong>Flexibilidad:</strong> Almacenar datos sin esquemas rígidos. <br><br> <strong>Modelos de Datos:</strong> <br> 1. <strong>Documental:</strong> MongoDB (JSON/BSON). <br> 2. <strong>Clave-Valor:</strong> Simplicidad extrema (Redis). <br> 3. <strong>Columnar:</strong> Optimizado para analítica (Cassandra). <br> 4. <strong>Grafos:</strong> Relaciones complejas (Neo4j).",
-                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Database", "SGBD", "NoSQL Models", "Scalability"],
-                code: `// Estructura de un Modelo Documental\n{\n  "matricula": "2026-4AP-01",\n  "nombre": "Luis García",\n  "carrera": "Programación",\n  "habilidades": ["C#", "SQL", "NoSQL"],\n  "estatus": {\n    "inscrito": true,\n    "semestre": 4\n  }\n}`,
-                exercise: "Identifica un sistema real (ej. Instagram) y explica por qué un modelo de 'Grafos' o 'Documentos' sería más útil que una tabla de SQL para las publicaciones de los usuarios."
+                title: "Teoría y Diferenciación SGBD",
+                subtitle: "Semana 1: El Salto al NoSQL",
+                theory: `Para ser un programador profesional, debes entender que los datos ya no caben en tablas simples. El <strong>SGBD</strong> (Sistema Gestor de Base de Datos) es el software "cerebro" que administra el acceso a los archivos físicos de datos.
+                        <br><br>
+                        <strong>Conceptos Críticos:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4">
+                            <li><strong>SQL (ACID):</strong> Basado en reglas matemáticas estrictas. Es excelente para bancos porque garantiza que si una transacción falla, nada se guarda.</li>
+                            <li><strong>NoSQL (BASE):</strong> Basado en disponibilidad. Es excelente para Facebook o Spotify porque prefieren que veas algo rápido aunque no esté actualizado al milisegundo (Consistencia Eventual).</li>
+                            <li><strong>Teorema CAP:</strong> Establece que en una red distribuida no puedes tener al mismo tiempo: <strong>C</strong>onsistencia (todos ven lo mismo), <strong>A</strong>vailability (el sistema siempre responde) y <strong>P</strong>articionamiento (el sistema sigue vivo si cae un servidor).</li>
+                        </ul>
+                        <br>
+                        <strong>Modelos de Datos Expandidos:</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="example-box">
+                                <i class="fas fa-key text-blue-600 mr-2"></i><strong>Clave-Valor:</strong> Como un locker. Solo necesitas la llave para obtener el objeto. Ideal para guardar sesiones de login.
+                            </div>
+                            <div class="example-box">
+                                <i class="fas fa-file-alt text-blue-600 mr-2"></i><strong>Documento:</strong> Como una ficha técnica. Todo lo que necesitas saber de un producto está en un solo "archivo" JSON.
+                            </div>
+                            <div class="example-box">
+                                <i class="fas fa-table text-blue-600 mr-2"></i><strong>Columnar:</strong> En lugar de leer toda una fila, lees solo la columna de "precios" de 1 millón de productos. Súper rápido para analítica.
+                            </div>
+                            <div class="example-box">
+                                <i class="fas fa-share-alt text-blue-600 mr-2"></i><strong>Grafo:</strong> Se enfoca en las relaciones. "A es amigo de B", "B compró C". Ideal para motores de recomendación.
+                            </div>
+                        </div>`,
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800",
+                concepts: ["SGBD", "ACID vs BASE", "Teorema CAP", "NoSQL Patterns"],
+                code: `// Ejemplo 1: Modelo de Documento (MongoDB)\n{\n  "sku": "LAP-001",\n  "nombre": "Laptop Pro",\n  "especificaciones": {\n     "ram": "16GB",\n     "ssd": "512GB"\n  }\n}\n\n// Ejemplo 2: Modelo Clave-Valor (Redis)\nSET sesion_usuario:123 "activo"\nGET sesion_usuario:123`,
+                exercise: "<strong>Reto 1.1:</strong> Piensa en el sistema de una 'Central de Autobuses'. ¿Qué parte del sistema debería ser SQL (estricto) y qué parte podría ser NoSQL (rápido)? Justifica tu respuesta en la libreta."
             },
             2: {
-                title: "Infraestructura Cloud: MongoDB Atlas",
-                theory: "MongoDB Atlas es una plataforma de base de datos en la nube multicloud (AWS, Azure, GCP). Permite gestionar clústeres elásticos sin preocuparse por el hardware. <br><br> Conceptos clave: <br> • <strong>Clúster:</strong> Conjunto de servidores que trabajan juntos para almacenar los datos. <br> • <strong>Network Access:</strong> Seguridad basada en IP para autorizar quién puede conectarse. <br> • <strong>Database Access:</strong> Creación de usuarios con roles específicos (Admin, Read Only).",
-                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Cluster M0", "Cloud Computing", "Network Security", "IAM"],
-                code: `// Flujo de configuración técnica\n1. Crear Organización y Proyecto\n2. Desplegar Clúster Tier M0 (Free)\n3. Configurar IP Whitelist (0.0.0.0/0 para labs)\n4. Obtener SRV Connection String`,
-                exercise: "¿Qué sucede si no agregas tu dirección IP actual a la sección de 'Network Access' en Atlas?"
+                title: "Arquitectura y Diseño NoSQL",
+                subtitle: "Semana 2: Modelado con BSON y JSON",
+                theory: `MongoDB guarda los datos como <strong>Documentos</strong>. Para nosotros es <strong>JSON</strong>, para la máquina es <strong>BSON</strong>.
+                        <br><br>
+                        <strong>Explicación de Términos:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4">
+                            <li><strong>JSON:</strong> Formato de texto para humanos. Ejemplo: <code>{"edad": 17}</code>.</li>
+                            <li><strong>BSON (Binary JSON):</strong> Versión comprimida para que MongoDB busque datos velozmente. Soporta <strong>ObjectId</strong>, que JSON normal no conoce.</li>
+                            <li><strong>Esquema Dinámico:</strong> Significa que no necesitas crear "campos vacíos" (Nulls). Si un cliente no tiene teléfono, simplemente el campo no existe en ese documento, ahorrando memoria.</li>
+                            <li><strong>ObjectId:</strong> Es un identificador de 12 bytes. Los primeros 4 bytes son la fecha exacta en la que se creó el registro. ¡Ya tienes la fecha de creación sin crear un campo nuevo!</li>
+                        </ul>`,
+                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=800",
+                concepts: ["JSON vs BSON", "Dynamic Schema", "ObjectId", "Embedded Docs"],
+                code: `// Ejemplo de un Documento Completo con Tipos BSON\n{\n  "_id": ObjectId("65c1a2b3c4d5e6f7a1b2c3d4"), // Único\n  "nombre": "Enrique Ramos",                  // String\n  "semestre": 4,                               // Int32\n  "promedio": 9.5,                             // Double\n  "habilidades": ["C#", "NoSQL"],              // Array\n  "meta_info": null                            // Null\n}`,
+                exercise: "<strong>Reto 2.1:</strong> Diseña el esquema JSON de un 'Reporte de Falla de Aire Acondicionado'. Debe incluir fecha, aula, nivel de urgencia y un arreglo con los materiales necesarios para repararlo."
             },
             3: {
-                title: "Interacción con MongoDB Shell (mongosh)",
-                theory: "El Shell de MongoDB es un entorno interactivo de JavaScript (basado en Node.js) que permite la administración directa de la base de datos. <br><br> Conceptos clave: <br> • <strong>REPL:</strong> Ciclo de Lectura-Evaluación-Impresión. <br> • <strong>SRV:</strong> Cadena de conexión estandarizada que incluye los nodos del clúster. <br> • <strong>Variables JS:</strong> Podemos usar lógica de programación (ciclos, arreglos) dentro de la terminal.",
-                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Terminal", "Node.js", "Connection String", "REPL"],
-                code: `// Comandos de navegación básicos\nshow dbs;         // Lista bases de datos\nuse mi_escuela;   // Cambia de contexto\nshow collections; // Lista las tablas/colecciones`,
-                exercise: "Escribe el comando para conectarte a tu clúster desde la terminal usando tu usuario 'admin_4ap'."
+                title: "Laboratorio Cloud: Atlas y Shell",
+                subtitle: "Semana 3: Despliegue y CRUD Básico",
+                theory: `En la industria, las bases de datos no están en tu laptop, están en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service).
+                        <br><br>
+                        <strong>Guía de Herramientas:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-3">
+                            <li><strong>Cluster M0:</strong> Nuestra granja de servidores gratuita en la nube.</li>
+                            <li><strong>SRV String:</strong> La URL mágica para conectar cualquier programa a tu base de datos.</li>
+                            <li><strong>mongosh:</strong> El "Shell" o consola. Es como el 'Símbolo del sistema' pero exclusivo para hablarle a MongoDB usando comandos de JavaScript.</li>
+                            <li><strong>IP Whitelist:</strong> Un muro de seguridad. Solo permites el paso a las computadoras que tú autorices.</li>
+                        </ul>`,
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+                concepts: ["Atlas DBaaS", "Connection Strings", "Security Whitelisting", "mongosh"],
+                code: `// Pasos para insertar y consultar en mongosh\n// 1. Crear documento:\ndb.inventario.insertOne({ "item": "Mouse", "qty": 50 });\n\n// 2. Leer todos los documentos:\ndb.inventario.find();\n\n// 3. Ver bases de datos:\nshow dbs;`,
+                exercise: "<strong>Reto 3.1:</strong> Conéctate a Atlas desde la terminal y crea una colección llamada 'alumnos'. Inserta tu propio nombre y grupo. Toma captura de pantalla de la confirmación <code>acknowledged: true</code>."
             },
             4: {
-                title: "Laboratorio CRUD e Integridad",
-                theory: "El proceso CRUD (Create, Read, Update, Delete) es el núcleo de cualquier sistema. En MongoDB, las consultas se realizan pasando objetos JSON como filtros. <br><br> Conceptos clave: <br> • <strong>Operadores de Comparación:</strong> $gt (>), $lt (<), $gte (>=), $lte (<=). <br> • <strong>$elemMatch:</strong> Busca documentos que contienen un array con al menos un elemento que cumpla todos los criterios.",
-                image: "https://images.unsplash.com/photo-1551808525-51a94da548ce?auto=format&fit=crop&q=80&w=800",
-                concepts: ["CRUD", "Operators", "Lógica Booleana", "Querying"],
-                code: `// Búsqueda avanzada de clientes\ndb.clientes.find({\n  "edad": { $gte: 18 },\n  "estatus": "Activo",\n  "compras": { $elemMatch: { "monto": { $gt: 500 } } }\n});`,
-                exercise: "Diseña un comando para buscar productos con precio entre 100 y 500 pesos usando $and."
+                title: "Optimización de Consultas",
+                subtitle: "Semana 4: Indexación y Alto Rendimiento",
+                theory: `Si tienes 1 millón de usuarios y buscas a "Luis", sin índices MongoDB tiene que leer 1 millón de archivos. Con un <strong>Índice</strong>, llega directo a la posición de "Luis".
+                        <br><br>
+                        <strong>Términos de Rendimiento:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4">
+                            <li><strong>Indexación (Index):</strong> Una estructura que guarda de forma ordenada los valores de un campo (ej. 'nombre') junto con un puntero al documento original.</li>
+                            <li><strong>COLSCAN:</strong> Es el peor enemigo. Significa "Collection Scan" (leer todo). Lo evitamos usando índices.</li>
+                            <li><strong>Operadores de Comparación:</strong> Herramientas para filtrar. <code>$gt</code> (mayor que), <code>$lt</code> (menor que), <code>$ne</code> (no es igual).</li>
+                            <li><strong>$and / $or:</strong> Combinamos filtros para ser precisos.</li>
+                        </ul>`,
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?auto=format&fit=crop&q=80&w=800",
+                concepts: ["Index Strategy", "Query Optimization", "Boolean Logic", "Explain Plan"],
+                code: `// Creación de un Índice Compuesto\ndb.ventas.createIndex({ "fecha": -1, "total": 1 });\n\n// Consulta con lógica compleja\ndb.ventas.find({\n  "total": { $gt: 1000 },\n  $or: [\n     { "metodo_pago": "Efectivo" },\n     { "sucursal": "Centro" }\n  ]\n}).explain("executionStats");`,
+                exercise: "<strong>Reto 4.1:</strong> Escribe la consulta necesaria para encontrar productos que tengan un precio mayor a 200 pero menor a 800, y que pertenezcan a la categoría 'Audio'."
             },
             5: {
-                title: "Proyecto PEC: Diseño Estructural",
-                theory: "Aplicamos los conceptos de **Esquema Flexible** para resolver un problema social. El diseño de una base de datos documental debe basarse en el **Patrón de Acceso** (cómo vamos a leer los datos). <br><br> Conceptos clave: <br> • <strong>Incrustación (Embedding):</strong> Guardar datos relacionados en un solo documento para mayor velocidad. <br> • <strong>Referencia:</strong> Vincular documentos mediante IDs.",
-                image: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Data Modeling", "Agua Split", "Social Impact", "Scalability"],
-                code: `// Estructura para recolección de agua\n{\n  "equipo": "Aire-102",\n  "capacidad_litros": 10,\n  "registros": [\n    { "fecha": "2025-02-12", "cantidad": 3.5 },\n    { "fecha": "2025-02-13", "cantidad": 2.8 }\n  ]\n}`,
-                exercise: "Justifica por qué es mejor usar 'Embedding' (arreglos internos) para los registros diarios de agua en lugar de crear otra colección."
+                title: "Evaluación Integral de Competencias",
+                subtitle: "Semana 5: Verificación de Aprendizaje",
+                theory: `Llegamos al cierre del primer bloque. Aquí evaluamos no solo que sepas "picar código", sino que entiendas la lógica detrás de los datos NoSQL.
+                        <br><br>
+                        <strong>Objetivos de la Evaluación:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-3">
+                            <li><strong>Examen Teórico:</strong> Dominio del Teorema CAP y Tipologías NoSQL.</li>
+                            <li><strong>Reto Práctico:</strong> Diseño de un esquema JSON funcional y su implementación en un clúster real de Atlas.</li>
+                            <li><strong>Optimización:</strong> Aplicación de índices correctos según el patrón de consulta solicitado.</li>
+                        </ul>`,
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
+                concepts: ["Skill Check", "Schema Validation", "Final Scripting", "Portfolio Review"],
+                code: `// Resumen de Comandos del Examen:\n- insertOne() / insertMany()\n- find({ filter }, { projection })\n- updateOne({ filter }, { $set: { data } })\n- createIndex({ field: 1 })\n- explain()`,
+                exercise: "<strong>Reto 5.1:</strong> Revisa tu Portafolio de Evidencias. Asegúrate de que todos los scripts de las semanas 1 a 4 funcionen y tengan comentarios explicando qué hace cada operador."
             }
         };
 
         function switchWeek(num) {
-            // UI Update
+            // Actualizar diseño de botones
             for(let i=1; i<=5; i++) {
-                document.getElementById('tab'+i).className = "week-tab bg-slate-50 text-slate-500 flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center hover:bg-slate-100";
+                const btn = document.getElementById('tab'+i);
+                btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
             }
-            document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[120px] py-4 rounded-xl font-bold text-sm uppercase flex flex-col items-center";
+            document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
 
-            // Data Injection
+            // Cambiar datos del contenido
             const d = contentData[num];
             const container = document.getElementById('week-content');
             
@@ -188,51 +266,63 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     <div class="space-y-6">
                         <div>
-                            <div class="flex flex-wrap gap-2 mb-3">
-                                ${d.concepts.map(c => `<span class="concept-badge">${c}</span>`).join('')}
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${d.concepts.map(c => `<span class="concept-badge"><i class="fas fa-microchip mr-1 opacity-50"></i>${c}</span>`).join('')}
                             </div>
-                            <h2 class="text-4xl font-black text-slate-900 leading-tight">${d.title}</h2>
-                            <p class="text-blue-600 font-bold text-sm mt-1 uppercase tracking-tighter">Sesión Semanal ${num}</p>
+                            <h2 class="text-3xl md:text-4xl font-black text-slate-900 leading-tight">${d.title}</h2>
+                            <p class="text-blue-600 font-bold text-xs mt-2 uppercase tracking-widest italic border-l-2 border-blue-600 pl-2">${d.subtitle}</p>
                         </div>
                         
-                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 leading-relaxed text-slate-600">
-                            <h4 class="font-bold text-slate-900 mb-4 border-b pb-2 flex items-center">
-                                <i class="fas fa-book-open mr-2 text-blue-500"></i> Conceptos Básicos
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed text-slate-700 theory-card">
+                            <h4 class="font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 flex items-center">
+                                <i class="fas fa-graduation-cap mr-2 text-blue-600"></i> Lección para el Alumno
                             </h4>
-                            <div class="text-lg space-y-4">
+                            <div class="text-[17px] space-y-4">
                                 ${d.theory}
                             </div>
                         </div>
 
-                        <div class="bg-emerald-50 p-6 rounded-3xl border-2 border-dashed border-emerald-200">
-                            <h4 class="font-black text-emerald-700 text-xs uppercase mb-2">Desafío Práctico</h4>
-                            <p class="text-emerald-900 font-medium">${d.exercise}</p>
+                        <div class="bg-blue-600 p-8 rounded-3xl shadow-lg relative overflow-hidden text-white group border-b-8 border-blue-900">
+                            <i class="fas fa-terminal absolute -right-6 -bottom-6 text-9xl opacity-10 transition-transform group-hover:scale-110"></i>
+                            <h4 class="font-black text-blue-200 text-[10px] uppercase tracking-tighter mb-2">
+                                <i class="fas fa-pencil-alt mr-1"></i> Tarea Formativa
+                            </h4>
+                            <p class="text-white font-bold text-lg italic leading-snug">${d.exercise}</p>
                         </div>
                     </div>
 
                     <div class="space-y-8">
-                        <div class="rounded-3xl overflow-hidden shadow-2xl h-64 border-4 border-white relative group">
-                            <img src="${d.image}" alt="Lab Visual" class="w-full h-full object-cover transition transform group-hover:scale-110 duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
+                            <img src="${d.image}" alt="Concepto Visual" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 text-white">
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Visualización Técnica</p>
+                                <p class="text-xl font-black italic">Módulo de Programación</p>
+                            </div>
                         </div>
 
                         <div class="code-container p-6 rounded-3xl shadow-2xl overflow-hidden">
                             <div class="flex space-x-2 mb-6 border-b border-slate-800 pb-4">
-                                <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
-                                <span class="text-[9px] text-slate-500 font-mono pl-2">script.mongodb</span>
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-lg shadow-red-500/20"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-lg shadow-yellow-500/20"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-lg shadow-green-500/20"></div>
+                                <span class="text-[10px] text-slate-500 font-mono pl-3 tracking-widest uppercase italic font-bold">Code_Sandbox.exe</span>
                             </div>
-                            <pre class="font-mono text-blue-200 text-sm overflow-x-auto selection:bg-blue-500/30"><code>${d.code}</code></pre>
-                            <button onclick="copyCode(this)" class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded-xl transition flex items-center justify-center space-x-2">
-                                <i class="fas fa-copy"></i> <span>COPIAR CÓDIGO DE CLASE</span>
+                            <pre class="font-mono text-blue-200 text-sm overflow-x-auto py-2 leading-relaxed selection:bg-blue-500 selection:text-white"><code>${d.code}</code></pre>
+                            <button onclick="copyCode(this)" class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black py-4 rounded-xl transition-all flex items-center justify-center space-x-2 shadow-lg active:scale-95 uppercase tracking-widest border border-blue-400">
+                                <i class="fas fa-copy"></i> <span>Copiar Fragmento de Código</span>
                             </button>
+                        </div>
+                        
+                        <div class="p-4 bg-slate-200 rounded-2xl flex items-center space-x-4 border border-slate-300">
+                             <div class="bg-white p-3 rounded-xl shadow-sm"><i class="fas fa-lightbulb text-amber-500 text-xl"></i></div>
+                             <p class="text-[11px] font-bold text-slate-600 uppercase tracking-tight leading-tight">Nota: Los comandos mostrados son compatibles con MongoDB Shell y Compass.</p>
                         </div>
                     </div>
                 </div>
             `;
 
-            // Trigger animation
+            // Efecto de entrada de contenido
             container.classList.remove('animate-content');
             void container.offsetWidth; 
             container.classList.add('animate-content');
@@ -248,14 +338,17 @@
             document.body.removeChild(temp);
             
             const original = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> <span>SINTAXIS COPIADA</span>';
+            btn.innerHTML = '<i class="fas fa-check"></i> <span>¡SINTAXIS COPIADA AL PORTAPAPELES!</span>';
             btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+            btn.classList.replace('border-blue-400', 'border-emerald-400');
             setTimeout(() => { 
                 btn.innerHTML = original; 
                 btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+                btn.classList.replace('border-emerald-400', 'border-blue-400');
             }, 2000);
         }
 
+        // Carga inicial
         window.onload = () => switchWeek(1);
     </script>
 </body>
