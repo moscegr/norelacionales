@@ -69,6 +69,21 @@
 
         .theory-card strong { color: #1e40af; font-weight: 700; }
         .example-box { border-left: 4px solid #3b82f6; background-color: #f8fafc; padding: 1rem; border-radius: 0.5rem; }
+        
+        .visual-mini-code {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .comparison-table th { background-color: #f1f5f9; color: #1e293b; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+        .comparison-table td { font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
+        .equiv-arrow { color: #3b82f6; font-weight: 900; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
@@ -94,10 +109,10 @@
         <div class="max-w-4xl mx-auto relative z-10">
             <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight uppercase italic">Primer Parcial: Inmersión</h1>
             <p class="text-blue-100 text-lg opacity-95 max-w-2xl mx-auto italic leading-snug">
-                Aprendiendo a gestionar la información en la era del Big Data: <span class="text-white font-bold underline">Flexibilidad, Rendimiento y Cloud</span>.
+                Gestionando información en la era de los datos masivos: <span class="text-white font-bold underline">Flexibilidad, Escalabilidad y Rendimiento</span>.
             </p>
         </div>
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none text-white">
             <i class="fas fa-network-wired text-[25rem] absolute -bottom-20 -right-20"></i>
         </div>
     </header>
@@ -131,18 +146,18 @@
     <!-- Contenedor Dinámico -->
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div id="week-content" class="animate-content">
-            <!-- Se carga via JavaScript -->
+            <!-- Inyección de contenido mediante JS -->
         </div>
     </main>
 
     <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center border-t border-slate-900">
         <div class="max-w-4xl mx-auto text-slate-400">
             <p class="text-white font-bold text-lg mb-2 italic">Submódulo 2: Implementa Bases de Datos No Relacionales</p>
-            <p class="text-sm mb-6 uppercase tracking-widest font-medium">Ing. Cruz Enrique Garcia Ramos • CETis 134</p>
-            <div class="flex justify-center space-x-8 text-[10px] font-bold border-t border-slate-800 pt-8 uppercase tracking-tighter">
+            <p class="text-sm mb-6 uppercase tracking-widest font-medium">Docente: Ing. Cruz Enrique Garcia Ramos • CBTis 134</p>
+            <div class="flex justify-center space-x-8 text-[10px] font-bold border-t border-slate-800 pt-8 uppercase tracking-tighter text-slate-500">
                 <span class="flex items-center"><i class="fas fa-microchip mr-2 text-blue-500"></i> ARQUITECTURA DISTRIBUIDA</span>
                 <span class="flex items-center"><i class="fas fa-users mr-2 text-blue-500"></i> GRUPO 4AP</span>
-                <span class="flex items-center"><i class="fas fa-clock mr-2 text-blue-500"></i> 8 HORAS/SEMANA</span>
+                <span class="flex items-center"><i class="fas fa-clock mr-2 text-blue-500"></i> 128 HORAS TOTALES</span>
             </div>
         </div>
     </footer>
@@ -150,115 +165,160 @@
     <script>
         const contentData = {
             1: {
-                title: "Teoría y Diferenciación SGBD",
-                subtitle: "Semana 1: El Salto al NoSQL",
-                theory: `Para ser un programador profesional, debes entender que los datos ya no caben en tablas simples. El <strong>SGBD</strong> (Sistema Gestor de Base de Datos) es el software "cerebro" que administra el acceso a los archivos físicos de datos.
+                title: "Teoría, Diferenciación y Equivalencias",
+                subtitle: "Semana 1: Cimientos del Mundo NoSQL",
+                theory: `Para dominar el entorno NoSQL, debemos comprender los conceptos que rompen con el modelo relacional tradicional.
                         <br><br>
                         <strong>Conceptos Críticos:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-4">
-                            <li><strong>SQL (ACID):</strong> Basado en reglas matemáticas estrictas. Es excelente para bancos porque garantiza que si una transacción falla, nada se guarda.</li>
-                            <li><strong>NoSQL (BASE):</strong> Basado en disponibilidad. Es excelente para Facebook o Spotify porque prefieren que veas algo rápido aunque no esté actualizado al milisegundo (Consistencia Eventual).</li>
-                            <li><strong>Teorema CAP:</strong> Establece que en una red distribuida no puedes tener al mismo tiempo: <strong>C</strong>onsistencia (todos ven lo mismo), <strong>A</strong>vailability (el sistema siempre responde) y <strong>P</strong>articionamiento (el sistema sigue vivo si cae un servidor).</li>
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li><strong>SGBD (Sistema Gestor de Base de Datos):</strong> El software intermediario entre el usuario y los datos físicos (ej. el proceso <code>mongod</code>).</li>
+                            <li><strong>SQL (ACID):</strong> Modelo basado en integridad absoluta. <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>lamiento y <strong>D</strong>urabilidad. Ideal para sistemas bancarios.</li>
+                            <li><strong>NoSQL (BASE):</strong> Modelo basado en alta disponibilidad. <strong>B</strong>asically <strong>A</strong>vailable, <strong>S</strong>oft-state, <strong>E</strong>ventual consistency. Los datos se sincronizan con el tiempo.</li>
+                            <li><strong>Teorema CAP:</strong> Establece que un sistema distribuido solo puede tener 2 de 3: <strong>C</strong>onsistencia, <strong>A</strong>vailability (Disponibilidad) y <strong>P</strong>articionamiento.</li>
                         </ul>
                         <br>
-                        <strong>Modelos de Datos Expandidos:</strong>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                        <div class="p-5 bg-blue-50 rounded-2xl border border-blue-200 shadow-sm">
+                            <h5 class="font-bold text-blue-900 mb-3 uppercase text-xs tracking-widest text-center"><i class="fas fa-sync-alt mr-2"></i>Mapa de Equivalencias SQL ↔ NoSQL</h5>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left comparison-table bg-white rounded-lg">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-3">Concepto SQL</th>
+                                            <th class="p-3 text-center">Relación</th>
+                                            <th class="p-3 text-green-700 font-bold">Concepto MongoDB</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="p-3 font-bold">Base de Datos</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Base de Datos</td></tr>
+                                        <tr><td class="p-3 font-bold">Tabla</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Colección (Collection)</td></tr>
+                                        <tr><td class="p-3 font-bold">Fila (Registro)</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Documento (Objeto JSON)</td></tr>
+                                        <tr><td class="p-3 font-bold">Columna</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Campo (Field)</td></tr>
+                                        <tr><td class="p-3 font-bold">Índice</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Índice (Index)</td></tr>
+                                        <tr><td class="p-3 font-bold">Uniones (Joins)</td><td class="p-3 text-center equiv-arrow">↔</td><td class="p-3 font-bold text-green-600 italic">Embedding / Linking</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        <strong>Modelos NoSQL con Ejemplo Visual:</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 text-slate-700">
                             <div class="example-box">
-                                <i class="fas fa-key text-blue-600 mr-2"></i><strong>Clave-Valor:</strong> Como un locker. Solo necesitas la llave para obtener el objeto. Ideal para guardar sesiones de login.
+                                <i class="fas fa-key text-blue-600 mr-2"></i><strong>Clave-Valor:</strong>
+                                <code class="visual-mini-code">"user_id:101" -> "{nombre: 'Luis'}"</code>
                             </div>
                             <div class="example-box">
-                                <i class="fas fa-file-alt text-blue-600 mr-2"></i><strong>Documento:</strong> Como una ficha técnica. Todo lo que necesitas saber de un producto está en un solo "archivo" JSON.
+                                <i class="fas fa-file-code text-blue-600 mr-2"></i><strong>Documento:</strong>
+                                <code class="visual-mini-code">{ "_id": 1, "nom": "Luis", "materias": [...] }</code>
                             </div>
                             <div class="example-box">
-                                <i class="fas fa-table text-blue-600 mr-2"></i><strong>Columnar:</strong> En lugar de leer toda una fila, lees solo la columna de "precios" de 1 millón de productos. Súper rápido para analítica.
+                                <i class="fas fa-columns text-blue-600 mr-2"></i><strong>Columnar:</strong>
+                                <code class="visual-mini-code">Row: { Name: 'Luis' | Age: 17 }</code>
                             </div>
                             <div class="example-box">
-                                <i class="fas fa-share-alt text-blue-600 mr-2"></i><strong>Grafo:</strong> Se enfoca en las relaciones. "A es amigo de B", "B compró C". Ideal para motores de recomendación.
+                                <i class="fas fa-project-diagram text-blue-600 mr-2"></i><strong>Grafo:</strong>
+                                <code class="visual-mini-code">(Luis)-[:ESTUDIA]->(NoSQL)</code>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="p-6 bg-slate-100 rounded-2xl border border-slate-300">
+                            <h5 class="font-bold text-slate-900 mb-3 uppercase text-xs flex items-center"><i class="fas fa-directions mr-2 text-blue-600"></i>Ejemplo Guiado: Tu primer documento</h5>
+                            <p class="text-sm text-slate-600 mb-4">Para crear un documento en MongoDB usamos la sintaxis de llaves <code>{ }</code>. Cada dato es una pareja de <strong>"Clave": "Valor"</strong>.</p>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 font-mono text-xs text-blue-800">
+                                { <br>
+                                &nbsp;&nbsp;"nombre": "Ana", <span class="text-slate-400 font-sans italic">// Cadena de texto</span><br>
+                                &nbsp;&nbsp;"edad": 17, <span class="text-slate-400 font-sans italic">// Número entero</span><br>
+                                &nbsp;&nbsp;"materias": ["NoSQL", "C#"], <span class="text-slate-400 font-sans italic">// Arreglo (Lista)</span><br>
+                                &nbsp;&nbsp;"becado": true <span class="text-slate-400 font-sans italic">// Booleano</span><br>
+                                }
                             </div>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800",
-                concepts: ["SGBD", "ACID vs BASE", "Teorema CAP", "NoSQL Patterns"],
-                code: `// Ejemplo 1: Modelo de Documento (MongoDB)\n{\n  "sku": "LAP-001",\n  "nombre": "Laptop Pro",\n  "especificaciones": {\n     "ram": "16GB",\n     "ssd": "512GB"\n  }\n}\n\n// Ejemplo 2: Modelo Clave-Valor (Redis)\nSET sesion_usuario:123 "activo"\nGET sesion_usuario:123`,
-                exercise: "<strong>Reto 1.1:</strong> Piensa en el sistema de una 'Central de Autobuses'. ¿Qué parte del sistema debería ser SQL (estricto) y qué parte podría ser NoSQL (rápido)? Justifica tu respuesta en la libreta."
+                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop", 
+                concepts: ["Conceptos Críticos", "Equivalencias", "Tabla vs Documento", "SGBD"],
+                code: `// COMPARATIVA VISUAL SQL VS NOSQL\n\n// 1. SQL (Fila rígida en tabla)\n// | ID | NOMBRE | TEL       |\n// |----|--------|-----------|\n// | 1  | Ana    | NULL      |\n\n// 2. MONGODB (Documento flexible en colección)\n{\n  "_id": 1,\n  "nombre": "Ana",\n  "habilidades": ["C#", "NoSQL"],\n  // No se guarda el campo 'tel' si no existe, ahorrando espacio.\n}`,
+                exercise: `<strong>Actividades de Reforzamiento:</strong><br><br>
+                           <strong>Reto 1.1:</strong> Diseña una 'Tabla SQL' para una biblioteca y luego transfórmala en un 'Documento de Colección' de MongoDB.<br><br>
+                           <strong>Ejercicio 1:</strong> Crea un documento JSON para registrar un dispositivo electrónico (ej. Celular) que incluya marca, modelo, precio y un arreglo con 3 características técnicas.<br><br>
+                           <strong>Ejercicio 2:</strong> Imagina una red social. Crea un documento para una "Publicación" que contenga el autor, el texto del post, la fecha y una lista de etiquetas (hashtags).`
             },
             2: {
-                title: "Arquitectura y Diseño NoSQL",
-                subtitle: "Semana 2: Modelado con BSON y JSON",
-                theory: `MongoDB guarda los datos como <strong>Documentos</strong>. Para nosotros es <strong>JSON</strong>, para la máquina es <strong>BSON</strong>.
+                title: "Arquitectura y Modelado Documental",
+                subtitle: "Semana 2: Estructuras BSON y JSON",
+                theory: `MongoDB utiliza <strong>BSON</strong> (Binary JSON) internamente, aunque nosotros escribimos en <strong>JSON</strong>.
                         <br><br>
-                        <strong>Explicación de Términos:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-4">
-                            <li><strong>JSON:</strong> Formato de texto para humanos. Ejemplo: <code>{"edad": 17}</code>.</li>
-                            <li><strong>BSON (Binary JSON):</strong> Versión comprimida para que MongoDB busque datos velozmente. Soporta <strong>ObjectId</strong>, que JSON normal no conoce.</li>
-                            <li><strong>Esquema Dinámico:</strong> Significa que no necesitas crear "campos vacíos" (Nulls). Si un cliente no tiene teléfono, simplemente el campo no existe en ese documento, ahorrando memoria.</li>
-                            <li><strong>ObjectId:</strong> Es un identificador de 12 bytes. Los primeros 4 bytes son la fecha exacta en la que se creó el registro. ¡Ya tienes la fecha de creación sin crear un campo nuevo!</li>
+                        <strong>Conceptos de Diseño:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li><strong>JSON (Legible):</strong> El estándar para el intercambio de datos. Ejemplo: <code>{"edad": 18}</code>.</li>
+                            <li><strong>BSON (Eficiente):</strong> Formato binario que permite tipos de datos extendidos como <strong>ObjectId</strong>, Fechas reales y Binarios.</li>
+                            <li><strong>ObjectId:</strong> Un identificador de 12 bytes único por documento. Los primeros 4 bytes representan la fecha de creación.</li>
+                            <li><strong>Embedding (Incrustar):</strong> Almacenar datos relacionados (como direcciones) dentro del mismo documento principal.</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=800",
-                concepts: ["JSON vs BSON", "Dynamic Schema", "ObjectId", "Embedded Docs"],
-                code: `// Ejemplo de un Documento Completo con Tipos BSON\n{\n  "_id": ObjectId("65c1a2b3c4d5e6f7a1b2c3d4"), // Único\n  "nombre": "Enrique Ramos",                  // String\n  "semestre": 4,                               // Int32\n  "promedio": 9.5,                             // Double\n  "habilidades": ["C#", "NoSQL"],              // Array\n  "meta_info": null                            // Null\n}`,
-                exercise: "<strong>Reto 2.1:</strong> Diseña el esquema JSON de un 'Reporte de Falla de Aire Acondicionado'. Debe incluir fecha, aula, nivel de urgencia y un arreglo con los materiales necesarios para repararlo."
+                image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=800&auto=format&fit=crop", 
+                concepts: ["BSON Syntax", "Data Schema", "ObjectId", "Embedded Objects"],
+                code: `// Ejemplo de Documento con Embedding\n{\n  "matricula": "2026-001",\n  "perfil": {\n    "nombre": "Luis",\n    "apellidos": "García"\n  },\n  "materias": [ "Programación", "NoSQL" ],\n  "activo": true\n}`,
+                exercise: "<strong>Reto 2.1:</strong> Diseña el esquema JSON para un 'Reporte de Recolección de Agua'. Debe incluir un objeto anidado para la 'ubicación' y un arreglo con los 'litros' por hora."
             },
             3: {
-                title: "Laboratorio Cloud: Atlas y Shell",
-                subtitle: "Semana 3: Despliegue y CRUD Básico",
-                theory: `En la industria, las bases de datos no están en tu laptop, están en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service).
+                title: "Infraestructura Cloud: Atlas y Shell",
+                subtitle: "Semana 3: Despliegue y Conectividad",
+                theory: `Las bases de datos modernas se gestionan en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service).
                         <br><br>
-                        <strong>Guía de Herramientas:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-3">
-                            <li><strong>Cluster M0:</strong> Nuestra granja de servidores gratuita en la nube.</li>
-                            <li><strong>SRV String:</strong> La URL mágica para conectar cualquier programa a tu base de datos.</li>
-                            <li><strong>mongosh:</strong> El "Shell" o consola. Es como el 'Símbolo del sistema' pero exclusivo para hablarle a MongoDB usando comandos de JavaScript.</li>
-                            <li><strong>IP Whitelist:</strong> Un muro de seguridad. Solo permites el paso a las computadoras que tú autorices.</li>
+                        <strong>Términos del Ecosistema:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
+                            <li><strong>Cluster:</strong> Grupo de servidores en la nube que resguardan tus datos.</li>
+                            <li><strong>SRV String:</strong> La URL de conexión. <code>mongodb+srv://...</code></li>
+                            <li><strong>mongosh:</strong> El Shell interactivo basado en JavaScript para enviar comandos al clúster.</li>
+                            <li><strong>Whitelisting:</strong> Muro de seguridad que solo permite el paso a las IPs autorizadas.</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Atlas DBaaS", "Connection Strings", "Security Whitelisting", "mongosh"],
-                code: `// Pasos para insertar y consultar en mongosh\n// 1. Crear documento:\ndb.inventario.insertOne({ "item": "Mouse", "qty": 50 });\n\n// 2. Leer todos los documentos:\ndb.inventario.find();\n\n// 3. Ver bases de datos:\nshow dbs;`,
-                exercise: "<strong>Reto 3.1:</strong> Conéctate a Atlas desde la terminal y crea una colección llamada 'alumnos'. Inserta tu propio nombre y grupo. Toma captura de pantalla de la confirmación <code>acknowledged: true</code>."
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", 
+                concepts: ["Atlas DBaaS", "Connection URL", "Security Wall", "Shell REPL"],
+                code: `// Operaciones CRUD iniciales en mongosh\n\n// 1. Crear documento (Create)\ndb.clase.insertOne({ "item": "Tablet", "stock": 10 });\n\n// 2. Consultar todos (Read)\ndb.clase.find();\n\n// 3. Ver bases de datos activas\nshow dbs;`,
+                exercise: "<strong>Reto 3.1:</strong> Conéctate a Atlas desde tu terminal, crea la base de datos 'cbtis134_labs' e inserta un documento con tu nombre completo."
             },
             4: {
-                title: "Optimización de Consultas",
-                subtitle: "Semana 4: Indexación y Alto Rendimiento",
-                theory: `Si tienes 1 millón de usuarios y buscas a "Luis", sin índices MongoDB tiene que leer 1 millón de archivos. Con un <strong>Índice</strong>, llega directo a la posición de "Luis".
+                title: "Optimización de Alto Rendimiento",
+                subtitle: "Semana 4: Indexación Estratégica",
+                theory: `Una base de datos lenta es un sistema fallido. Aprendemos a optimizar el rendimiento mediante índices.
                         <br><br>
-                        <strong>Términos de Rendimiento:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-4">
-                            <li><strong>Indexación (Index):</strong> Una estructura que guarda de forma ordenada los valores de un campo (ej. 'nombre') junto con un puntero al documento original.</li>
-                            <li><strong>COLSCAN:</strong> Es el peor enemigo. Significa "Collection Scan" (leer todo). Lo evitamos usando índices.</li>
-                            <li><strong>Operadores de Comparación:</strong> Herramientas para filtrar. <code>$gt</code> (mayor que), <code>$lt</code> (menor que), <code>$ne</code> (no es igual).</li>
-                            <li><strong>$and / $or:</strong> Combinamos filtros para ser precisos.</li>
+                        <strong>Términos de Performance:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li><strong>Indexación (Index):</strong> Estructura ordenada que evita leer todos los archivos (COLSCAN).</li>
+                            <li><strong>COLSCAN:</strong> Escaneo total de la colección. Es extremadamente lento para millones de datos.</li>
+                            <li><strong>IXSCAN:</strong> Escaneo de índice. El motor llega directo al dato solicitado.</li>
+                            <li><strong>Operadores de Rango:</strong> <code>$gt</code> (Mayor que), <code>$lt</code> (Menor que), <code>$in</code> (En lista).</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Index Strategy", "Query Optimization", "Boolean Logic", "Explain Plan"],
-                code: `// Creación de un Índice Compuesto\ndb.ventas.createIndex({ "fecha": -1, "total": 1 });\n\n// Consulta con lógica compleja\ndb.ventas.find({\n  "total": { $gt: 1000 },\n  $or: [\n     { "metodo_pago": "Efectivo" },\n     { "sucursal": "Centro" }\n  ]\n}).explain("executionStats");`,
-                exercise: "<strong>Reto 4.1:</strong> Escribe la consulta necesaria para encontrar productos que tengan un precio mayor a 200 pero menor a 800, y que pertenezcan a la categoría 'Audio'."
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop", 
+                concepts: ["Indexing", "IXSCAN", "Boolean Logic", "Performance Stats"],
+                code: `// Crear índice para optimizar búsquedas por 'sku'\ndb.inventario.createIndex({ "sku": 1 });\n\n// Búsqueda de rango con múltiples condiciones\ndb.inventario.find({\n  "precio": { $gte: 500, $lte: 1500 },\n  "estatus": "disponible"\n});`,
+                exercise: "<strong>Reto 4.1:</strong> Escribe la consulta para buscar productos con stock mayor a 0 que NO pertenezcan a la categoría 'Papelería' usando el operador $ne."
             },
             5: {
-                title: "Evaluación Integral de Competencias",
+                title: "Evaluación Integral del Bloque",
                 subtitle: "Semana 5: Verificación de Aprendizaje",
-                theory: `Llegamos al cierre del primer bloque. Aquí evaluamos no solo que sepas "picar código", sino que entiendas la lógica detrás de los datos NoSQL.
+                theory: `Momento de consolidar las competencias adquiridas en el diseño y gestión de datos no estructurados.
                         <br><br>
-                        <strong>Objetivos de la Evaluación:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-3">
-                            <li><strong>Examen Teórico:</strong> Dominio del Teorema CAP y Tipologías NoSQL.</li>
-                            <li><strong>Reto Práctico:</strong> Diseño de un esquema JSON funcional y su implementación en un clúster real de Atlas.</li>
-                            <li><strong>Optimización:</strong> Aplicación de índices correctos según el patrón de consulta solicitado.</li>
+                        <strong>Dimensiones a Evaluar:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
+                            <li><strong>Dominio Teórico:</strong> Examen sobre SGBD, Teorema CAP y Tipología NoSQL.</li>
+                            <li><strong>Habilidad Práctica:</strong> Implementación de clústeres, seguridad y sentencias CRUD avanzadas.</li>
+                            <li><strong>Diseño:</strong> Modelado del esquema JSON para el proyecto social del plantel.</li>
+                            <li><strong>Evidencias:</strong> Portafolio completo con capturas de pantalla de tus ejecuciones en Atlas.</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
-                concepts: ["Skill Check", "Schema Validation", "Final Scripting", "Portfolio Review"],
-                code: `// Resumen de Comandos del Examen:\n- insertOne() / insertMany()\n- find({ filter }, { projection })\n- updateOne({ filter }, { $set: { data } })\n- createIndex({ field: 1 })\n- explain()`,
-                exercise: "<strong>Reto 5.1:</strong> Revisa tu Portafolio de Evidencias. Asegúrate de que todos los scripts de las semanas 1 a 4 funcionen y tengan comentarios explicando qué hace cada operador."
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
+                concepts: ["Exam Success", "Portfolio Delivery", "Final Review", "Skills Validation"],
+                code: `// Resumen de Operadores para el Examen:\n- $set / $inc (Actualizaciones)\n- $push / $pull (Arreglos)\n- $gt, $lt, $gte, $lte (Comparación)\n- createIndex() (Rendimiento)`,
+                exercise: "<strong>Reto 5.1:</strong> Asegúrate de que tu clúster en Atlas tenga al menos 2 índices creados y un esquema JSON bien estructurado para el proyecto de Agua Split."
             }
         };
 
         function switchWeek(num) {
-            // Actualizar diseño de botones
+            // UI Update: Botones
             for(let i=1; i<=5; i++) {
                 const btn = document.getElementById('tab'+i);
                 btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
             }
             document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
 
-            // Cambiar datos del contenido
+            // Data Update: Inyección de contenido
             const d = contentData[num];
             const container = document.getElementById('week-content');
             
@@ -267,15 +327,15 @@
                     <div class="space-y-6">
                         <div>
                             <div class="flex flex-wrap gap-2 mb-4">
-                                ${d.concepts.map(c => `<span class="concept-badge"><i class="fas fa-microchip mr-1 opacity-50"></i>${c}</span>`).join('')}
+                                ${d.concepts.map(c => `<span class="concept-badge"><i class="fas fa-check-circle mr-1 opacity-50"></i>${c}</span>`).join('')}
                             </div>
                             <h2 class="text-3xl md:text-4xl font-black text-slate-900 leading-tight">${d.title}</h2>
                             <p class="text-blue-600 font-bold text-xs mt-2 uppercase tracking-widest italic border-l-2 border-blue-600 pl-2">${d.subtitle}</p>
                         </div>
                         
-                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed text-slate-700 theory-card">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed text-slate-800 theory-card">
                             <h4 class="font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 flex items-center">
-                                <i class="fas fa-graduation-cap mr-2 text-blue-600"></i> Lección para el Alumno
+                                <i class="fas fa-graduation-cap mr-2 text-blue-600"></i> Lección Teórica Detallada
                             </h4>
                             <div class="text-[17px] space-y-4">
                                 ${d.theory}
@@ -285,19 +345,19 @@
                         <div class="bg-blue-600 p-8 rounded-3xl shadow-lg relative overflow-hidden text-white group border-b-8 border-blue-900">
                             <i class="fas fa-terminal absolute -right-6 -bottom-6 text-9xl opacity-10 transition-transform group-hover:scale-110"></i>
                             <h4 class="font-black text-blue-200 text-[10px] uppercase tracking-tighter mb-2">
-                                <i class="fas fa-pencil-alt mr-1"></i> Tarea Formativa
+                                <i class="fas fa-pencil-alt mr-1"></i> Tarea Formativa del Alumno
                             </h4>
-                            <p class="text-white font-bold text-lg italic leading-snug">${d.exercise}</p>
+                            <div class="text-white font-bold text-sm italic leading-snug">${d.exercise}</div>
                         </div>
                     </div>
 
                     <div class="space-y-8">
                         <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
-                            <img src="${d.image}" alt="Concepto Visual" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
+                            <img src="${d.image}" alt="Concepto Visual Técnico" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
-                                <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Visualización Técnica</p>
-                                <p class="text-xl font-black italic">Módulo de Programación</p>
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Entorno Profesional NoSQL</p>
+                                <p class="text-xl font-black italic tracking-tighter">CBTis 134 • Programación</p>
                             </div>
                         </div>
 
@@ -306,23 +366,22 @@
                                 <div class="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-lg shadow-red-500/20"></div>
                                 <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-lg shadow-yellow-500/20"></div>
                                 <div class="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-lg shadow-green-500/20"></div>
-                                <span class="text-[10px] text-slate-500 font-mono pl-3 tracking-widest uppercase italic font-bold">Code_Sandbox.exe</span>
+                                <span class="text-[10px] text-slate-500 font-mono pl-3 tracking-widest uppercase italic font-bold">Query_Lab.bin</span>
                             </div>
                             <pre class="font-mono text-blue-200 text-sm overflow-x-auto py-2 leading-relaxed selection:bg-blue-500 selection:text-white"><code>${d.code}</code></pre>
                             <button onclick="copyCode(this)" class="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-black py-4 rounded-xl transition-all flex items-center justify-center space-x-2 shadow-lg active:scale-95 uppercase tracking-widest border border-blue-400">
-                                <i class="fas fa-copy"></i> <span>Copiar Fragmento de Código</span>
+                                <i class="fas fa-copy"></i> <span>Copiar Código al Portapapeles</span>
                             </button>
                         </div>
                         
                         <div class="p-4 bg-slate-200 rounded-2xl flex items-center space-x-4 border border-slate-300">
-                             <div class="bg-white p-3 rounded-xl shadow-sm"><i class="fas fa-lightbulb text-amber-500 text-xl"></i></div>
-                             <p class="text-[11px] font-bold text-slate-600 uppercase tracking-tight leading-tight">Nota: Los comandos mostrados son compatibles con MongoDB Shell y Compass.</p>
+                             <div class="bg-white p-3 rounded-xl shadow-sm"><i class="fas fa-info-circle text-blue-500 text-xl"></i></div>
+                             <p class="text-[11px] font-bold text-slate-600 uppercase tracking-tight leading-tight italic">Referencia: Alineado a la planeación del CBTis 134 • Ciclo 2025-2026.</p>
                         </div>
                     </div>
                 </div>
             `;
 
-            // Efecto de entrada de contenido
             container.classList.remove('animate-content');
             void container.offsetWidth; 
             container.classList.add('animate-content');
@@ -338,7 +397,7 @@
             document.body.removeChild(temp);
             
             const original = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> <span>¡SINTAXIS COPIADA AL PORTAPAPELES!</span>';
+            btn.innerHTML = '<i class="fas fa-check"></i> <span>¡SINTAXIS COPIADA!</span>';
             btn.classList.replace('bg-blue-600', 'bg-emerald-600');
             btn.classList.replace('border-blue-400', 'border-emerald-400');
             setTimeout(() => { 
@@ -348,7 +407,6 @@
             }, 2000);
         }
 
-        // Carga inicial
         window.onload = () => switchWeek(1);
     </script>
 </body>
