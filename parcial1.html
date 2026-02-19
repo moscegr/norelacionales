@@ -97,6 +97,10 @@
             text-align: left;
         }
         .sql-table-rep th { background: #f8fafc; }
+
+        @media (max-width: 640px) {
+            .week-tab { min-width: 45%; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
@@ -130,7 +134,7 @@
         </div>
     </header>
 
-    <!-- Navegación Semanal (Tabs) -->
+    <!-- Navegación Semanal (Tabs Responsivas) -->
     <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
         <div class="bg-slate-200/60 backdrop-blur-xl p-1.5 rounded-2xl shadow-xl flex flex-wrap justify-center gap-1.5 border border-white/30">
             <button onclick="switchWeek(1)" id="tab1" class="week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center">
@@ -163,7 +167,6 @@
         </div>
     </main>
 
-    <!-- Footer actualizado -->
     <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center border-t border-slate-900">
         <div class="max-w-4xl mx-auto text-slate-400">
             <p class="text-white font-bold text-lg mb-2 italic">Submódulo 2: Implementa Bases de Datos No Relacionales</p>
@@ -232,7 +235,7 @@
                         <div class="p-6 bg-slate-100 rounded-2xl border border-slate-300">
                             <h5 class="font-bold text-slate-900 mb-3 uppercase text-xs flex items-center"><i class="fas fa-directions mr-2 text-blue-600"></i>Ejemplo Guiado: Tu primer documento</h5>
                             <p class="text-sm text-slate-600 mb-4">Para crear un documento en MongoDB usamos la sintaxis de llaves <code>{ }</code>. Cada dato es una pareja de <strong>"Clave": "Valor"</strong>.</p>
-                            <div class="bg-white p-4 rounded-xl border border-slate-200 font-mono text-xs text-blue-800">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 font-mono text-xs text-blue-800 overflow-x-auto">
                                 { <br>
                                 &nbsp;&nbsp;"nombre": "Ana", <span class="text-slate-400 font-sans italic">// Cadena de texto</span><br>
                                 &nbsp;&nbsp;"edad": 17, <span class="text-slate-400 font-sans italic">// Número entero</span><br>
@@ -252,7 +255,7 @@
             2: {
                 title: "Diseño y Arquitectura de Datos NoSQL",
                 subtitle: "Semana 2: Modelado Eficiente",
-                theory: `Diseñar en NoSQL no significa "tirar los datos sin orden". Significa diseñar en base a las **necesidades del sistema**.
+                theory: `Diseñar en NoSQL no significa "tirar los datos sin orden". Significa diseñar en base a las <strong>necesidades del sistema</strong>.
                         <br><br>
                         <strong>1. Identificación de Necesidades:</strong>
                         <p class="text-slate-600 text-sm mb-4">Antes de programar, debemos preguntarnos: ¿Qué datos consultará mi aplicación más seguido? ¿Qué información siempre debe ir junta? (Ej: Un alumno y sus calificaciones).</p>
@@ -264,25 +267,27 @@
                             <li><strong>Referencing (Vincular):</strong> Usar IDs para conectar documentos en diferentes colecciones (similar a las Foreign Keys pero manual).</li>
                         </ul>
                         <br>
-                        <div class="p-5 bg-indigo-50 rounded-2xl border border-indigo-200 shadow-sm">
+                        <div class="p-5 bg-indigo-50 rounded-2xl border border-indigo-200 shadow-sm mb-6">
                             <h5 class="font-bold text-indigo-900 mb-3 uppercase text-xs tracking-widest text-center"><i class="fas fa-users-cog mr-2"></i>Ejemplo Resuelto: Información de Usuarios</h5>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="bg-white p-3 rounded-lg border border-slate-200">
                                     <p class="text-[10px] font-bold text-slate-500 uppercase mb-2">Representación SQL (Tabla)</p>
-                                    <table class="sql-table-rep">
-                                        <thead>
-                                            <tr><th>id</th><th>user</th><th>email</th><th>role</th></tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr><td>1</td><td>egramos</td><td>er@mail.com</td><td>admin</td></tr>
-                                            <tr><td>2</td><td>lgarcia</td><td>lg@mail.com</td><td>user</td></tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="overflow-x-auto">
+                                        <table class="sql-table-rep">
+                                            <thead>
+                                                <tr><th>id</th><th>user</th><th>email</th><th>role</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td>1</td><td>egramos</td><td>er@mail.com</td><td>admin</td></tr>
+                                                <tr><td>2</td><td>lgarcia</td><td>lg@mail.com</td><td>user</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <p class="text-[9px] text-red-500 mt-2 italic font-medium">Nota: No permite arreglos en columnas.</p>
                                 </div>
                                 <div class="bg-white p-3 rounded-lg border border-slate-200">
                                     <p class="text-[10px] font-bold text-green-600 uppercase mb-2">Representación MongoDB (JSON)</p>
-                                    <pre class="text-[9px] font-mono text-blue-800">
+                                    <pre class="text-[10px] font-mono text-blue-800 leading-tight">
 {
   "user": "egramos",
   "email": "er@mail.com",
@@ -294,10 +299,26 @@
 }</pre>
                                 </div>
                             </div>
+                        </div>
+
+                        <strong>3. Ejemplo Guiado Gráfico: Modelado de Catálogo</strong>
+                        <div class="bg-slate-800 p-6 rounded-2xl text-slate-300 text-sm mb-4">
+                            <h6 class="text-white font-bold mb-2">Escenario: Sistema de Inventario</h6>
+                            <p class="mb-3 text-xs">Observe cómo anidamos datos técnicos sin necesidad de tablas externas:</p>
+                            <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 font-mono text-[11px] text-emerald-400 overflow-x-auto">
+{ <br>
+&nbsp;&nbsp;"producto": "SSD Kingston 1TB", <br>
+&nbsp;&nbsp;"especificaciones": { <span class="text-slate-500 font-sans">// Embedding</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;"interfaz": "SATA III", <br>
+&nbsp;&nbsp;&nbsp;&nbsp;"lectura": "500MB/s" <br>
+&nbsp;&nbsp;}, <br>
+&nbsp;&nbsp;"categorias": ["Hardware", "Almacenamiento"] <span class="text-slate-500 font-sans">// Arreglo</span> <br>
+}
+                            </div>
                         </div>`,
                 image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Necesidades del Sistema", "Esquemas Flexibles", "Embedding vs Referencing", "JSON Design"],
-                code: `// Diseño de un Esquema Profesional para Usuarios\n{\n  "matricula": "2026-001",\n  "perfil": {\n    "nombre": "Luis",\n    "apellidos": "García",\n    "edad": 17\n  },\n  "materias": [ \n    { "codigo": "PROG", "nombre": "NoSQL", "calif": 10 },\n    { "codigo": "BD", "nombre": "SQL Server", "calif": 9 }\n  ],\n  "estatus": "regular"\n}`,
+                code: `// MODELADO DE REFERENCIA (LINKING)\n// Colección: alumnos\n{\n  "_id": ObjectId("65c1a2b3..."),\n  "nombre": "Luis Garcia"\n}\n\n// Colección: calificaciones\n{\n  "alumno_id": ObjectId("65c1a2b3..."), // Vínculo manual\n  "materia": "NoSQL",\n  "calif": 10\n}`,
                 exercise: `<strong>Actividades de Diseño NoSQL:</strong><br><br>
                            <strong>Ejercicio 1:</strong> Identifica las necesidades para una aplicación de "Restaurante". Diseña el esquema JSON para un "Pedido" que incluya: número de mesa, lista de platillos (como arreglo de objetos) y el total.<br><br>
                            <strong>Ejercicio 2:</strong> Convierte una tabla relacional de "Coches" (Placa, Marca, Modelo, Color) a un documento MongoDB, pero añade un campo incrustado (Objeto) para los datos del "Propietario" y un arreglo para los "Servicios de Mantenimiento" realizados.`
@@ -311,7 +332,7 @@
                         <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
                             <li><strong>Cluster:</strong> Grupo de servidores en la nube que resguardan tus datos.</li>
                             <li><strong>SRV String:</strong> La URL de conexión. <code>mongodb+srv://...</code></li>
-                            <li><strong>mongosh:</strong> El Shell interactivo basado en JavaScript para enviar comandos al clúster.</li>
+                            <li><strong>mongosh:</strong> El Shell interactivo basado en JavaScript.</li>
                             <li><strong>Whitelisting:</strong> Muro de seguridad que solo permite el paso a las IPs autorizadas.</li>
                         </ul>`,
                 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", 
@@ -327,7 +348,7 @@
                         <strong>Términos de Performance:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
                             <li><strong>Indexación (Index):</strong> Estructura ordenada que evita leer todos los archivos (COLSCAN).</li>
-                            <li><strong>COLSCAN:</strong> Escaneo total de la colección. Es extremadamente lento para millones de datos.</li>
+                            <li><strong>COLSCAN:</strong> Escaneo total de la colección. Extremadamente lento.</li>
                             <li><strong>IXSCAN:</strong> Escaneo de índice. El motor llega directo al dato solicitado.</li>
                             <li><strong>Operadores de Rango:</strong> <code>$gt</code> (Mayor que), <code>$lt</code> (Menor que), <code>$in</code> (En lista).</li>
                         </ul>`,
@@ -344,26 +365,24 @@
                         <strong>Dimensiones a Evaluar:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
                             <li><strong>Dominio Teórico:</strong> Examen sobre SGBD, Teorema CAP y Tipología NoSQL.</li>
-                            <li><strong>Habilidad Práctica:</strong> Implementación de clústeres, seguridad y sentencias CRUD avanzadas.</li>
-                            <li><strong>Diseño:</strong> Modelado del esquema JSON para el proyecto social del plantel.</li>
+                            <li><strong>Habilidad Práctica:</strong> Configuración de clústeres, seguridad y sentencias CRUD.</li>
+                            <li><strong>Diseño:</strong> Modelado de esquemas JSON funcionales para sistemas de inventarios o usuarios.</li>
                             <li><strong>Evidencias:</strong> Portafolio completo con capturas de pantalla de tus ejecuciones en Atlas.</li>
                         </ul>`,
                 image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Exam Success", "Portfolio Delivery", "Final Review", "Skills Validation"],
                 code: `// Resumen de Operadores para el Examen:\n- $set / $inc (Actualizaciones)\n- $push / $pull (Arreglos)\n- $gt, $lt, $gte, $lte (Comparación)\n- createIndex() (Rendimiento)`,
-                exercise: "<strong>Reto 5.1:</strong> Asegúrate de que tu clúster en Atlas tenga al menos 2 índices creados y un esquema JSON bien estructurado para el proyecto de Agua Split."
+                exercise: "<strong>Reto 5.1:</strong> Revise su portafolio. Asegúrese de que sus scripts de diseño (Semana 2) y sus consultas de optimización (Semana 4) estén documentados con su nombre."
             }
         };
 
         function switchWeek(num) {
-            // UI Update: Botones
             for(let i=1; i<=5; i++) {
                 const btn = document.getElementById('tab'+i);
                 btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
             }
             document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
 
-            // Data Update: Inyección de contenido
             const d = contentData[num];
             const container = document.getElementById('week-content');
             
