@@ -84,6 +84,19 @@
         .comparison-table th { background-color: #f1f5f9; color: #1e293b; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
         .comparison-table td { font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; color: #334155; }
         .equiv-arrow { color: #3b82f6; font-weight: 900; }
+        
+        .sql-table-rep {
+            border: 2px solid #e2e8f0;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            width: 100%;
+        }
+        .sql-table-rep th, .sql-table-rep td {
+            border: 1px solid #cbd5e1;
+            padding: 4px 8px;
+            text-align: left;
+        }
+        .sql-table-rep th { background: #f8fafc; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 overflow-x-hidden">
@@ -237,21 +250,57 @@
                            <strong>Ejercicio 2:</strong> Imagina una red social. Crea un documento para una "Publicación" que contenga el autor, el texto del post, la fecha y una lista de etiquetas (hashtags).`
             },
             2: {
-                title: "Arquitectura y Modelado Documental",
-                subtitle: "Semana 2: Estructuras BSON y JSON",
-                theory: `MongoDB utiliza <strong>BSON</strong> (Binary JSON) internamente, aunque nosotros escribimos en <strong>JSON</strong>.
+                title: "Diseño y Arquitectura de Datos NoSQL",
+                subtitle: "Semana 2: Modelado Eficiente",
+                theory: `Diseñar en NoSQL no significa "tirar los datos sin orden". Significa diseñar en base a las **necesidades del sistema**.
                         <br><br>
-                        <strong>Conceptos de Diseño:</strong>
+                        <strong>1. Identificación de Necesidades:</strong>
+                        <p class="text-slate-600 text-sm mb-4">Antes de programar, debemos preguntarnos: ¿Qué datos consultará mi aplicación más seguido? ¿Qué información siempre debe ir junta? (Ej: Un alumno y sus calificaciones).</p>
+                        
+                        <strong>2. Estructura y Esquemas:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>JSON (Legible):</strong> El estándar para el intercambio de datos. Ejemplo: <code>{"edad": 18}</code>.</li>
-                            <li><strong>BSON (Eficiente):</strong> Formato binario que permite tipos de datos extendidos como <strong>ObjectId</strong>, Fechas reales y Binarios.</li>
-                            <li><strong>ObjectId:</strong> Un identificador de 12 bytes único por documento. Los primeros 4 bytes representan la fecha de creación.</li>
-                            <li><strong>Embedding (Incrustar):</strong> Almacenar datos relacionados (como direcciones) dentro del mismo documento principal.</li>
-                        </ul>`,
+                            <li><strong>Esquema Flexible:</strong> A diferencia de SQL, aquí el esquema puede evolucionar. Podemos agregar campos nuevos sin alterar los datos viejos.</li>
+                            <li><strong>Embedding (Incrustar):</strong> Guardar objetos dentro de objetos. Ideal para datos que siempre se leen juntos.</li>
+                            <li><strong>Referencing (Vincular):</strong> Usar IDs para conectar documentos en diferentes colecciones (similar a las Foreign Keys pero manual).</li>
+                        </ul>
+                        <br>
+                        <div class="p-5 bg-indigo-50 rounded-2xl border border-indigo-200 shadow-sm">
+                            <h5 class="font-bold text-indigo-900 mb-3 uppercase text-xs tracking-widest text-center"><i class="fas fa-users-cog mr-2"></i>Ejemplo Resuelto: Información de Usuarios</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-2">Representación SQL (Tabla)</p>
+                                    <table class="sql-table-rep">
+                                        <thead>
+                                            <tr><th>id</th><th>user</th><th>email</th><th>role</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>1</td><td>egramos</td><td>er@mail.com</td><td>admin</td></tr>
+                                            <tr><td>2</td><td>lgarcia</td><td>lg@mail.com</td><td>user</td></tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="text-[9px] text-red-500 mt-2 italic font-medium">Nota: No permite arreglos en columnas.</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <p class="text-[10px] font-bold text-green-600 uppercase mb-2">Representación MongoDB (JSON)</p>
+                                    <pre class="text-[9px] font-mono text-blue-800">
+{
+  "user": "egramos",
+  "email": "er@mail.com",
+  "config": {
+    "tema": "oscuro",
+    "notificaciones": true
+  },
+  "grupos": ["4AP", "6AP"]
+}</pre>
+                                </div>
+                            </div>
+                        </div>`,
                 image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=800&auto=format&fit=crop", 
-                concepts: ["BSON Syntax", "Data Schema", "ObjectId", "Embedded Objects"],
-                code: `// Ejemplo de Documento con Embedding\n{\n  "matricula": "2026-001",\n  "perfil": {\n    "nombre": "Luis",\n    "apellidos": "García"\n  },\n  "materias": [ "Programación", "NoSQL" ],\n  "activo": true\n}`,
-                exercise: "<strong>Reto 2.1:</strong> Diseña el esquema JSON para un 'Reporte de Recolección de Agua'. Debe incluir un objeto anidado para la 'ubicación' y un arreglo con los 'litros' por hora."
+                concepts: ["Necesidades del Sistema", "Esquemas Flexibles", "Embedding vs Referencing", "JSON Design"],
+                code: `// Diseño de un Esquema Profesional para Usuarios\n{\n  "matricula": "2026-001",\n  "perfil": {\n    "nombre": "Luis",\n    "apellidos": "García",\n    "edad": 17\n  },\n  "materias": [ \n    { "codigo": "PROG", "nombre": "NoSQL", "calif": 10 },\n    { "codigo": "BD", "nombre": "SQL Server", "calif": 9 }\n  ],\n  "estatus": "regular"\n}`,
+                exercise: `<strong>Actividades de Diseño NoSQL:</strong><br><br>
+                           <strong>Ejercicio 1:</strong> Identifica las necesidades para una aplicación de "Restaurante". Diseña el esquema JSON para un "Pedido" que incluya: número de mesa, lista de platillos (como arreglo de objetos) y el total.<br><br>
+                           <strong>Ejercicio 2:</strong> Convierte una tabla relacional de "Coches" (Placa, Marca, Modelo, Color) a un documento MongoDB, pero añade un campo incrustado (Objeto) para los datos del "Propietario" y un arreglo para los "Servicios de Mantenimiento" realizados.`
             },
             3: {
                 title: "Infraestructura Cloud: Atlas y Shell",
