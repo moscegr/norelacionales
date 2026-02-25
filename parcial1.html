@@ -185,8 +185,8 @@
                         <strong>Conceptos Críticos:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
                             <li><strong>SGBD (Sistema Gestor de Base de Datos):</strong> El software intermediario entre el usuario y los datos físicos (ej. el proceso <code>mongod</code>).</li>
-                            <li><strong>SQL (ACID):</strong> Modelo basado en integridad absoluta. <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>lamiento y <strong>D</strong>urabilidad.</li>
-                            <li><strong>NoSQL (BASE):</strong> Modelo basado en alta disponibilidad. <strong>B</strong>asically <strong>A</strong>vailable, <strong>S</strong>oft-state, <strong>E</strong>ventual consistency.</li>
+                            <li><strong>SQL (ACID):</strong> Modelo basado en integridad absoluta. <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>lamiento y <strong>D</strong>urabilidad. Ideal para sistemas bancarios.</li>
+                            <li><strong>NoSQL (BASE):</strong> Modelo basado en alta disponibilidad. <strong>B</strong>asically <strong>A</strong>vailable, <strong>S</strong>oft-state, <strong>E</strong>ventual consistency. Los datos se sincronizan con el tiempo.</li>
                             <li><strong>Teorema CAP:</strong> Establece que un sistema distribuido solo puede tener 2 de 3: <strong>C</strong>onsistencia, <strong>A</strong>vailability (Disponibilidad) y <strong>P</strong>articionamiento.</li>
                         </ul>
                         <br>
@@ -326,7 +326,7 @@
             3: {
                 title: "Infraestructura Cloud y Comandos mongosh",
                 subtitle: "Semana 3: Despliegue y Laboratorio de Comandos",
-                theory: `Las bases de datos modernas viven en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> que gestiona clústeres elásticos.
+                theory: `Las bases de datos modernas viven en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service) que gestiona clústeres elásticos.
                         <br><br>
                         <strong>Instrucciones y Comandos Esenciales:</strong>
                         <div class="space-y-4 text-slate-700 text-[15px]">
@@ -392,7 +392,7 @@
                              <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.createIndex({ "campo": 1 }) // 1=Asc, -1=Desc</code>
                              <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.find().sort({ "campo": 1 }).limit(10) // Encadenamiento</code>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop", 
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Advanced CRUD", "Logical Operators", "Indexing", "IXSCAN vs COLSCAN", "Chain Methods"],
                 code: `// EJEMPLOS DE COMANDOS AVANZADOS\n\n// 1. Filtrar productos caros y ordenarlos de mayor a menor\ndb.ventas.find({ "precio": { $gt: 1000 } }).sort({ "precio": -1 });\n\n// 2. Incrementar stock en +10 unidades a todos los artículos\ndb.almacen.updateMany({}, { $inc: { "stock": 10 } });\n\n// 3. Buscar usuarios que vivan en Chilpancingo o Acapulco\ndb.usuarios.find({ "ciudad": { $in: ["Chilpancingo", "Acapulco"] } });\n\n// 4. Agregar una nota nueva a una lista de registros\ndb.bitacora.updateOne(\n  { "id": 505 },\n  { $push: { "notas": "Revisión técnica completada" } }\n);\n\n// 5. Analizar rendimiento de búsqueda\ndb.usuarios.find({ "email": "er@mail.com" }).explain("executionStats");`,
                 exercise: `<strong>Ejercicios de Consultas y Operadores:</strong><br><br>
