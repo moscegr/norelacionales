@@ -324,21 +324,48 @@
                            <strong>Ejercicio 2:</strong> Convierte una tabla relacional de "Coches" (Placa, Marca, Modelo, Color) a un documento MongoDB, pero añade un campo incrustado (Objeto) para los datos del "Propietario" y un arreglo para los "Servicios de Mantenimiento" realizados.`
             },
             3: {
-                title: "Infraestructura Cloud: Atlas y Shell",
-                subtitle: "Semana 3: Despliegue y Conectividad",
-                theory: `Las bases de datos modernas se gestionan en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service).
+                title: "Infraestructura Cloud y Comandos mongosh",
+                subtitle: "Semana 3: Despliegue y Laboratorio de Comandos",
+                theory: `Las bases de datos modernas viven en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service) que gestiona clústeres elásticos.
                         <br><br>
-                        <strong>Términos del Ecosistema:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
-                            <li><strong>Cluster:</strong> Grupo de servidores en la nube que resguardan tus datos.</li>
-                            <li><strong>SRV String:</strong> La URL de conexión. <code>mongodb+srv://...</code></li>
-                            <li><strong>mongosh:</strong> El Shell interactivo basado en JavaScript.</li>
-                            <li><strong>Whitelisting:</strong> Muro de seguridad que solo permite el paso a las IPs autorizadas.</li>
-                        </ul>`,
+                        <strong>Instrucciones y Comandos Esenciales:</strong>
+                        <div class="space-y-4 text-slate-700 text-[15px]">
+                            <p><strong>1. Navegación Global:</strong></p>
+                            <ul class="list-disc ml-8">
+                                <li><code>show dbs</code>: Lista todas las bases de datos disponibles.</li>
+                                <li><code>use mi_base_de_datos</code>: Crea o cambia el contexto a una base específica.</li>
+                                <li><code>show collections</code>: Lista las colecciones (tablas) dentro de la DB actual.</li>
+                                <li><code>cls</code>: Limpia la terminal del Shell.</li>
+                            </ul>
+                            
+                            <p><strong>2. Gestión de Colecciones:</strong></p>
+                            <ul class="list-disc ml-8">
+                                <li><code>db.createCollection("nombre")</code>: Crea una colección manualmente (opcional).</li>
+                                <li><code>db.nombre_coleccion.drop()</code>: Elimina permanentemente una colección y sus datos.</li>
+                            </ul>
+
+                            <p><strong>3. Operaciones CRUD (Create, Read, Update, Delete):</strong></p>
+                            <ul class="list-disc ml-8">
+                                <li><strong>Crear:</strong> <code>insertOne({data})</code> o <code>insertMany([{d1}, {d2}])</code>.</li>
+                                <li><strong>Leer:</strong> <code>find({filtro})</code> para todos, <code>findOne({filtro})</code> para el primero encontrado.</li>
+                                <li><strong>Actualizar:</strong> <code>updateOne({filtro}, {$set: {nuevos_datos}})</code>.</li>
+                                <li><strong>Eliminar:</strong> <code>deleteOne({filtro})</code> o <code>deleteMany({filtro})</code>.</li>
+                            </ul>
+                            
+                            <p><strong>4. Utilidades de Sistema:</strong></p>
+                            <ul class="list-disc ml-8">
+                                <li><code>db.help()</code>: Muestra ayuda sobre los métodos de base de datos.</li>
+                                <li><code>db.coleccion.stats()</code>: Muestra el tamaño y ocupación de la colección.</li>
+                            </ul>
+                        </div>`,
                 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", 
-                concepts: ["Atlas DBaaS", "Connection URL", "Security Wall", "Shell REPL"],
-                code: `// Operaciones CRUD iniciales en mongosh\n\n// 1. Crear documento (Create)\ndb.clase.insertOne({ "item": "Tablet", "stock": 10 });\n\n// 2. Consultar todos (Read)\ndb.clase.find();\n\n// 3. Ver bases de datos activas\nshow dbs;`,
-                exercise: "<strong>Reto 3.1:</strong> Conéctate a Atlas desde tu terminal, crea la base de datos 'cbtis134_labs' e inserta un documento con tu nombre completo."
+                concepts: ["Atlas DBaaS", "mongosh", "CRUD Methods", "Global Commands", "Security Wall"],
+                code: `// GUÍA TÉCNICA DE COMANDOS\n\n// 1. Entrar a una base de datos nueva\nuse laboratorio_cbtis;\n\n// 2. Insertar varios documentos a la vez\ndb.equipos.insertMany([\n  { "nombre": "Router R1", "estatus": "Activo" },\n  { "nombre": "Switch S1", "estatus": "Inactivo" }\n]);\n\n// 3. Buscar solo los equipos activos\ndb.equipos.find({ "estatus": "Activo" });\n\n// 4. Actualizar un registro específico\ndb.equipos.updateOne(\n  { "nombre": "Switch S1" },\n  { $set: { "estatus": "Activo", "fecha_mantenimiento": "2026-02-25" } }\n);\n\n// 5. Contar documentos\ndb.equipos.countDocuments();`,
+                exercise: `<strong>Laboratorio de Comandos:</strong><br><br>
+                           <strong>Actividad 1:</strong> Abre tu clúster de Atlas y entra al Shell. Crea una base de datos llamada 'MiNombre_DB'.<br><br>
+                           <strong>Actividad 2:</strong> Inserta 5 documentos en una colección 'contactos' que representen a tus amigos (nombre, edad, telefono).<br><br>
+                           <strong>Actividad 3:</strong> Usa el comando <code>find()</code> con un filtro para mostrar solo a los amigos mayores de 18 años (usa <code>$gt: 18</code>).<br><br>
+                           <strong>Actividad 4:</strong> Actualiza el teléfono de uno de tus contactos y verifica el cambio.`
             },
             4: {
                 title: "Optimización de Alto Rendimiento",
@@ -377,12 +404,14 @@
         };
 
         function switchWeek(num) {
+            // UI Update: Botones
             for(let i=1; i<=5; i++) {
                 const btn = document.getElementById('tab'+i);
                 btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
             }
             document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
 
+            // Data Update: Inyección de contenido
             const d = contentData[num];
             const container = document.getElementById('week-content');
             
