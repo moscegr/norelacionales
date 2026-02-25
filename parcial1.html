@@ -167,6 +167,7 @@
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center border-t border-slate-900">
         <div class="max-w-4xl mx-auto text-slate-400">
             <p class="text-white font-bold text-lg mb-2 italic">Submódulo 2: Implementa Bases de Datos No Relacionales</p>
@@ -184,8 +185,8 @@
                         <strong>Conceptos Críticos:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
                             <li><strong>SGBD (Sistema Gestor de Base de Datos):</strong> El software intermediario entre el usuario y los datos físicos (ej. el proceso <code>mongod</code>).</li>
-                            <li><strong>SQL (ACID):</strong> Modelo basado en integridad absoluta. <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>lamiento y <strong>D</strong>urabilidad. Ideal para sistemas bancarios.</li>
-                            <li><strong>NoSQL (BASE):</strong> Modelo basado en alta disponibilidad. <strong>B</strong>asically <strong>A</strong>vailable, <strong>S</strong>oft-state, <strong>E</strong>ventual consistency. Los datos se sincronizan con el tiempo.</li>
+                            <li><strong>SQL (ACID):</strong> Modelo basado en integridad absoluta. <strong>A</strong>tomicidad, <strong>C</strong>onsistencia, <strong>I</strong>lamiento y <strong>D</strong>urabilidad.</li>
+                            <li><strong>NoSQL (BASE):</strong> Modelo basado en alta disponibilidad. <strong>B</strong>asically <strong>A</strong>vailable, <strong>S</strong>oft-state, <strong>E</strong>ventual consistency.</li>
                             <li><strong>Teorema CAP:</strong> Establece que un sistema distribuido solo puede tener 2 de 3: <strong>C</strong>onsistencia, <strong>A</strong>vailability (Disponibilidad) y <strong>P</strong>articionamiento.</li>
                         </ul>
                         <br>
@@ -258,13 +259,13 @@
                 theory: `Diseñar en NoSQL no significa "tirar los datos sin orden". Significa diseñar en base a las <strong>necesidades del sistema</strong>.
                         <br><br>
                         <strong>1. Identificación de Necesidades:</strong>
-                        <p class="text-slate-600 text-sm mb-4">Antes de programar, debemos preguntarnos: ¿Qué datos consultará mi aplicación más seguido? ¿Qué información siempre debe ir junta? (Ej: Un alumno y sus calificaciones).</p>
+                        <p class="text-slate-600 text-sm mb-4">Antes de programar, debemos preguntarnos: ¿Qué datos consultará mi aplicación más seguido? ¿Qué información siempre debe ir junta?</p>
                         
                         <strong>2. Estructura y Esquemas:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>Esquema Flexible:</strong> A diferencia de SQL, aquí el esquema puede evolucionar. Podemos agregar campos nuevos sin alterar los datos viejos.</li>
+                            <li><strong>Esquema Flexible:</strong> Aquí el esquema puede evolucionar sin alterar los datos anteriores.</li>
                             <li><strong>Embedding (Incrustar):</strong> Guardar objetos dentro de objetos. Ideal para datos que siempre se leen juntos.</li>
-                            <li><strong>Referencing (Vincular):</strong> Usar IDs para conectar documentos en diferentes colecciones (similar a las Foreign Keys pero manual).</li>
+                            <li><strong>Referencing (Vincular):</strong> Usar IDs para conectar documentos en diferentes colecciones.</li>
                         </ul>
                         <br>
                         <div class="p-5 bg-indigo-50 rounded-2xl border border-indigo-200 shadow-sm mb-6">
@@ -304,7 +305,6 @@
                         <strong>3. Ejemplo Guiado Gráfico: Modelado de Catálogo</strong>
                         <div class="bg-slate-800 p-6 rounded-2xl text-slate-300 text-sm mb-4">
                             <h6 class="text-white font-bold mb-2">Escenario: Sistema de Inventario</h6>
-                            <p class="mb-3 text-xs">Observe cómo anidamos datos técnicos sin necesidad de tablas externas:</p>
                             <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 font-mono text-[11px] text-emerald-400 overflow-x-auto">
 { <br>
 &nbsp;&nbsp;"producto": "SSD Kingston 1TB", <br>
@@ -312,7 +312,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;"interfaz": "SATA III", <br>
 &nbsp;&nbsp;&nbsp;&nbsp;"lectura": "500MB/s" <br>
 &nbsp;&nbsp;}, <br>
-&nbsp;&nbsp;"categorias": ["Hardware", "Almacenamiento"] <span class="text-slate-500 font-sans">// Arreglo</span> <br>
+&nbsp;&nbsp;"categorias": ["Hardware", "Almacenamiento"] <br>
 }
                             </div>
                         </div>`,
@@ -321,68 +321,85 @@
                 code: `// MODELADO DE REFERENCIA (LINKING)\n// Colección: alumnos\n{\n  "_id": ObjectId("65c1a2b3..."),\n  "nombre": "Luis Garcia"\n}\n\n// Colección: calificaciones\n{\n  "alumno_id": ObjectId("65c1a2b3..."), // Vínculo manual\n  "materia": "NoSQL",\n  "calif": 10\n}`,
                 exercise: `<strong>Actividades de Diseño NoSQL:</strong><br><br>
                            <strong>Ejercicio 1:</strong> Identifica las necesidades para una aplicación de "Restaurante". Diseña el esquema JSON para un "Pedido" que incluya: número de mesa, lista de platillos (como arreglo de objetos) y el total.<br><br>
-                           <strong>Ejercicio 2:</strong> Convierte una tabla relacional de "Coches" (Placa, Marca, Modelo, Color) a un documento MongoDB, pero añade un campo incrustado (Objeto) para los datos del "Propietario" y un arreglo para los "Servicios de Mantenimiento" realizados.`
+                           <strong>Ejercicio 2:</strong> Convierte una tabla relacional de "Coches" (Placa, Marca, Modelo, Color) a un documento MongoDB, pero añade un campo incrustado (Objeto) para los datos del "Propietario" y un arreglo para los "Servicios de Mantenimiento".`
             },
             3: {
                 title: "Infraestructura Cloud y Comandos mongosh",
                 subtitle: "Semana 3: Despliegue y Laboratorio de Comandos",
-                theory: `Las bases de datos modernas viven en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> (Database as a Service) que gestiona clústeres elásticos.
+                theory: `Las bases de datos modernas viven en la nube. <strong>MongoDB Atlas</strong> es una plataforma <strong>DBaaS</strong> que gestiona clústeres elásticos.
                         <br><br>
                         <strong>Instrucciones y Comandos Esenciales:</strong>
                         <div class="space-y-4 text-slate-700 text-[15px]">
                             <p><strong>1. Navegación Global:</strong></p>
                             <ul class="list-disc ml-8">
-                                <li><code>show dbs</code>: Lista todas las bases de datos disponibles.</li>
-                                <li><code>use mi_base_de_datos</code>: Crea o cambia el contexto a una base específica.</li>
-                                <li><code>show collections</code>: Lista las colecciones (tablas) dentro de la DB actual.</li>
-                                <li><code>cls</code>: Limpia la terminal del Shell.</li>
+                                <li><code>show dbs</code>: Lista todas las bases de datos.</li>
+                                <li><code>use mi_db</code>: Crea o cambia el contexto.</li>
+                                <li><code>show collections</code>: Lista las colecciones.</li>
                             </ul>
                             
-                            <p><strong>2. Gestión de Colecciones:</strong></p>
+                            <p><strong>2. Operaciones CRUD:</strong></p>
                             <ul class="list-disc ml-8">
-                                <li><code>db.createCollection("nombre")</code>: Crea una colección manualmente (opcional).</li>
-                                <li><code>db.nombre_coleccion.drop()</code>: Elimina permanentemente una colección y sus datos.</li>
-                            </ul>
-
-                            <p><strong>3. Operaciones CRUD (Create, Read, Update, Delete):</strong></p>
-                            <ul class="list-disc ml-8">
-                                <li><strong>Crear:</strong> <code>insertOne({data})</code> o <code>insertMany([{d1}, {d2}])</code>.</li>
-                                <li><strong>Leer:</strong> <code>find({filtro})</code> para todos, <code>findOne({filtro})</code> para el primero encontrado.</li>
-                                <li><strong>Actualizar:</strong> <code>updateOne({filtro}, {$set: {nuevos_datos}})</code>.</li>
-                                <li><strong>Eliminar:</strong> <code>deleteOne({filtro})</code> o <code>deleteMany({filtro})</code>.</li>
-                            </ul>
-                            
-                            <p><strong>4. Utilidades de Sistema:</strong></p>
-                            <ul class="list-disc ml-8">
-                                <li><code>db.help()</code>: Muestra ayuda sobre los métodos de base de datos.</li>
-                                <li><code>db.coleccion.stats()</code>: Muestra el tamaño y ocupación de la colección.</li>
+                                <li><strong>Crear:</strong> <code>insertOne()</code> o <code>insertMany()</code>.</li>
+                                <li><strong>Leer:</strong> <code>find()</code> para todos.</li>
+                                <li><strong>Actualizar:</strong> <code>updateOne({filtro}, {$set: {data}})</code>.</li>
+                                <li><strong>Eliminar:</strong> <code>deleteOne({filtro})</code>.</li>
                             </ul>
                         </div>`,
                 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Atlas DBaaS", "mongosh", "CRUD Methods", "Global Commands", "Security Wall"],
-                code: `// GUÍA TÉCNICA DE COMANDOS\n\n// 1. Entrar a una base de datos nueva\nuse laboratorio_cbtis;\n\n// 2. Insertar varios documentos a la vez\ndb.equipos.insertMany([\n  { "nombre": "Router R1", "estatus": "Activo" },\n  { "nombre": "Switch S1", "estatus": "Inactivo" }\n]);\n\n// 3. Buscar solo los equipos activos\ndb.equipos.find({ "estatus": "Activo" });\n\n// 4. Actualizar un registro específico\ndb.equipos.updateOne(\n  { "nombre": "Switch S1" },\n  { $set: { "estatus": "Activo", "fecha_mantenimiento": "2026-02-25" } }\n);\n\n// 5. Contar documentos\ndb.equipos.countDocuments();`,
+                code: `// GUÍA TÉCNICA DE COMANDOS\n\n// 1. Entrar a una base de datos nueva\nuse laboratorio_cbtis;\n\n// 2. Insertar varios documentos a la vez\ndb.equipos.insertMany([\n  { "nombre": "Router R1", "estatus": "Activo" },\n  { "nombre": "Switch S1", "estatus": "Inactivo" }\n]);\n\n// 3. Buscar solo los equipos activos\ndb.equipos.find({ "estatus": "Activo" });`,
                 exercise: `<strong>Laboratorio de Comandos:</strong><br><br>
                            <strong>Actividad 1:</strong> Abre tu clúster de Atlas y entra al Shell. Crea una base de datos llamada 'MiNombre_DB'.<br><br>
-                           <strong>Actividad 2:</strong> Inserta 5 documentos en una colección 'contactos' que representen a tus amigos (nombre, edad, telefono).<br><br>
-                           <strong>Actividad 3:</strong> Usa el comando <code>find()</code> con un filtro para mostrar solo a los amigos mayores de 18 años (usa <code>$gt: 18</code>).<br><br>
-                           <strong>Actividad 4:</strong> Actualiza el teléfono de uno de tus contactos y verifica el cambio.`
+                           <strong>Actividad 2:</strong> Inserta 5 documentos en una colección 'contactos' que representen a tus amigos.<br><br>
+                           <strong>Actividad 3:</strong> Usa el comando <code>find()</code> con un filtro para mostrar solo a los amigos mayores de 18 años.`
             },
             4: {
-                title: "Optimización de Alto Rendimiento",
-                subtitle: "Semana 4: Indexación Estratégica",
-                theory: `Una base de datos lenta es un sistema fallido. Aprendemos a optimizar el rendimiento mediante índices.
+                title: "Gestión y Optimización de Consultas Avanzadas",
+                subtitle: "Semana 4: Operadores y Rendimiento Técnico",
+                theory: `Una base de datos lenta es un sistema fallido. Dominaremos los operadores para consultas instantáneas y quirúrgicas.
                         <br><br>
-                        <strong>Términos de Performance:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>Indexación (Index):</strong> Estructura ordenada que evita leer todos los archivos (COLSCAN).</li>
-                            <li><strong>COLSCAN:</strong> Escaneo total de la colección. Extremadamente lento.</li>
-                            <li><strong>IXSCAN:</strong> Escaneo de índice. El motor llega directo al dato solicitado.</li>
-                            <li><strong>Operadores de Rango:</strong> <code>$gt</code> (Mayor que), <code>$lt</code> (Menor que), <code>$in</code> (En lista).</li>
-                        </ul>`,
+                        <strong>1. Operadores de Comparación (Filtros):</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-[13px] mb-6 text-slate-800 font-medium">
+                            <div class="p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                <code class="text-blue-600 font-bold">$gt / $gte</code><br>
+                                <span class="text-[11px] text-slate-500">Mayor que / Mayor o igual que</span>
+                            </div>
+                            <div class="p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                <code class="text-blue-600 font-bold">$lt / $lte</code><br>
+                                <span class="text-[11px] text-slate-500">Menor que / Menor o igual que</span>
+                            </div>
+                            <div class="p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                <code class="text-blue-600 font-bold">$ne</code><br>
+                                <span class="text-[11px] text-slate-500">No es igual a (Not Equal)</span>
+                            </div>
+                            <div class="p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                <code class="text-blue-600 font-bold">$in</code><br>
+                                <span class="text-[11px] text-slate-500">Existe dentro de una lista [a, b, c]</span>
+                            </div>
+                        </div>
+
+                        <strong>2. Operadores de Actualización Atómica:</strong>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-3 mb-6">
+                            <li><strong>$set</strong>: Modifica o añade campos sin borrar el resto del documento.</li>
+                            <li><strong>$inc</strong>: Incrementa o decrementa valores numéricos (útil para stock o likes).</li>
+                            <li><strong>$push</strong>: Agrega un elemento nuevo a un arreglo (lista) existente.</li>
+                            <li><strong>$pull</strong>: Remueve elementos específicos de un arreglo.</li>
+                        </ul>
+
+                        <strong>3. Optimización mediante Indexación:</strong>
+                        <p class="text-slate-600 text-sm italic mb-4">Utilizar <code>createIndex()</code> para transformar un <strong>COLSCAN</strong> (lento) en un <strong>IXSCAN</strong> (veloz).</p>
+                        <div class="flex flex-col space-y-2">
+                             <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.createIndex({ "campo": 1 }) // 1=Asc, -1=Desc</code>
+                             <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.find().sort({ "campo": 1 }).limit(10) // Encadenamiento</code>
+                        </div>`,
                 image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop", 
-                concepts: ["Indexing", "IXSCAN", "Boolean Logic", "Performance Stats"],
-                code: `// Crear índice para optimizar búsquedas por 'sku'\ndb.inventario.createIndex({ "sku": 1 });\n\n// Búsqueda de rango con múltiples condiciones\ndb.inventario.find({\n  "precio": { $gte: 500, $lte: 1500 },\n  "estatus": "disponible"\n});`,
-                exercise: "<strong>Reto 4.1:</strong> Escribe la consulta para buscar productos con stock mayor a 0 que NO pertenezcan a la categoría 'Papelería' usando el operador $ne."
+                concepts: ["Advanced CRUD", "Logical Operators", "Indexing", "IXSCAN vs COLSCAN", "Chain Methods"],
+                code: `// EJEMPLOS DE COMANDOS AVANZADOS\n\n// 1. Filtrar productos caros y ordenarlos de mayor a menor\ndb.ventas.find({ "precio": { $gt: 1000 } }).sort({ "precio": -1 });\n\n// 2. Incrementar stock en +10 unidades a todos los artículos\ndb.almacen.updateMany({}, { $inc: { "stock": 10 } });\n\n// 3. Buscar usuarios que vivan en Chilpancingo o Acapulco\ndb.usuarios.find({ "ciudad": { $in: ["Chilpancingo", "Acapulco"] } });\n\n// 4. Agregar una nota nueva a una lista de registros\ndb.bitacora.updateOne(\n  { "id": 505 },\n  { $push: { "notas": "Revisión técnica completada" } }\n);\n\n// 5. Analizar rendimiento de búsqueda\ndb.usuarios.find({ "email": "er@mail.com" }).explain("executionStats");`,
+                exercise: `<strong>Ejercicios de Consultas y Operadores:</strong><br><br>
+                           <strong>Ejercicio 1:</strong> Escribe la consulta para buscar documentos en 'productos' que tengan un precio mayor a 200 pero que NO sean de la marca 'Sony'.<br><br>
+                           <strong>Ejercicio 2:</strong> Actualiza todos los alumnos del grupo '4AP' incrementando su 'inasistencias' en +1.<br><br>
+                           <strong>Ejercicio 3:</strong> Diseña una sentencia que busque a los usuarios con edad entre 18 y 25 años, ordenados de forma descendente por nombre y limitando el resultado a solo los primeros 5.<br><br>
+                           <strong>Ejercicio 4:</strong> Agrega el valor "Mantenimiento Preventivo" a un arreglo llamado 'servicios' dentro de la colección 'maquinas'.`
             },
             5: {
                 title: "Evaluación Integral del Bloque",
@@ -392,8 +409,8 @@
                         <strong>Dimensiones a Evaluar:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
                             <li><strong>Dominio Teórico:</strong> Examen sobre SGBD, Teorema CAP y Tipología NoSQL.</li>
-                            <li><strong>Habilidad Práctica:</strong> Configuración de clústeres, seguridad y sentencias CRUD.</li>
-                            <li><strong>Diseño:</strong> Modelado de esquemas JSON funcionales para sistemas de inventarios o usuarios.</li>
+                            <li><strong>Habilidad Práctica:</strong> Configuración de clústeres, seguridad y sentencias CRUD avanzados.</li>
+                            <li><strong>Diseño:</strong> Modelado de esquemas JSON funcionales.</li>
                             <li><strong>Evidencias:</strong> Portafolio completo con capturas de pantalla de tus ejecuciones en Atlas.</li>
                         </ul>`,
                 image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
@@ -417,7 +434,7 @@
             
             container.innerHTML = `
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                    <div class="space-y-6">
+                    <div class="space-y-6 text-slate-800">
                         <div>
                             <div class="flex flex-wrap gap-2 mb-4">
                                 ${d.concepts.map(c => `<span class="concept-badge"><i class="fas fa-check-circle mr-1 opacity-50"></i>${c}</span>`).join('')}
@@ -426,7 +443,7 @@
                             <p class="text-blue-600 font-bold text-xs mt-2 uppercase tracking-widest italic border-l-2 border-blue-600 pl-2">${d.subtitle}</p>
                         </div>
                         
-                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed text-slate-800 theory-card">
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed theory-card">
                             <h4 class="font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 flex items-center">
                                 <i class="fas fa-graduation-cap mr-2 text-blue-600"></i> Lección Teórica Detallada
                             </h4>
@@ -446,7 +463,7 @@
 
                     <div class="space-y-8">
                         <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
-                            <img src="${d.image}" alt="Concepto Visual Técnico" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
+                            <img src="${d.image}" alt="Concepto Visual" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Entorno Profesional NoSQL</p>
