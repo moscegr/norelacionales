@@ -150,7 +150,7 @@
                 <span>Semana 03</span>
             </button>
             <button onclick="switchWeek(4)" id="tab4" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
-                <span class="opacity-60 text-[9px] mb-1 italic">IV. Optimización</span>
+                <span class="opacity-60 text-[9px] mb-1 italic">IV. Operadores</span>
                 <span>Semana 04</span>
             </button>
             <button onclick="switchWeek(5)" id="tab5" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
@@ -354,9 +354,9 @@
                            <strong>Actividad 3:</strong> Usa el comando <code>find()</code> con un filtro para mostrar solo a los amigos mayores de 18 años.`
             },
             4: {
-                title: "Gestión y Optimización de Consultas Avanzadas",
-                subtitle: "Semana 4: Operadores y Rendimiento Técnico",
-                theory: `Una base de datos lenta es un sistema fallido. Dominaremos los operadores para consultas instantáneas y quirúrgicas.
+                title: "Filtros de Comparación y Formateo",
+                subtitle: "Semana 4: Consultas Avanzadas en NoSQL",
+                theory: `Dominaremos los operadores que permiten combinar condiciones y dar formato profesional a los resultados.
                         <br><br>
                         <strong>1. Operadores de Comparación (Filtros):</strong>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-[13px] mb-6 text-slate-800 font-medium">
@@ -378,28 +378,36 @@
                             </div>
                         </div>
 
-                        <strong>2. Operadores de Actualización Atómica:</strong>
+                        <strong>2. Operadores Lógicos:</strong>
                         <ul class="list-disc ml-8 text-slate-700 text-sm space-y-3 mb-6">
-                            <li><strong>$set</strong>: Modifica o añade campos sin borrar el resto del documento.</li>
-                            <li><strong>$inc</strong>: Incrementa o decrementa valores numéricos (útil para stock o likes).</li>
-                            <li><strong>$push</strong>: Agrega un elemento nuevo a un arreglo (lista) existente.</li>
-                            <li><strong>$pull</strong>: Remueve elementos específicos de un arreglo.</li>
+                            <li><strong>$and</strong>: Combina múltiples filtros. Todos deben cumplirse. <br> <em>Ej: find({ $and: [{age: 20}, {status: "A"}] })</em></li>
+                            <li><strong>$or</strong>: Basta con que se cumpla una de las condiciones. <br> <em>Ej: find({ $or: [{role: "admin"}, {role: "editor"}] })</em></li>
                         </ul>
 
-                        <strong>3. Optimización mediante Indexación:</strong>
-                        <p class="text-slate-600 text-sm italic mb-4">Utilizar <code>createIndex()</code> para transformar un <strong>COLSCAN</strong> (lento) en un <strong>IXSCAN</strong> (veloz).</p>
-                        <div class="flex flex-col space-y-2">
-                             <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.createIndex({ "campo": 1 }) // 1=Asc, -1=Desc</code>
-                             <code class="text-[11px] bg-slate-100 p-2 rounded">db.col.find().sort({ "campo": 1 }).limit(10) // Encadenamiento</code>
-                        </div>`,
-                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", 
-                concepts: ["Advanced CRUD", "Logical Operators", "Indexing", "IXSCAN vs COLSCAN", "Chain Methods"],
-                code: `// EJEMPLOS DE COMANDOS AVANZADOS\n\n// 1. Filtrar productos caros y ordenarlos de mayor a menor\ndb.ventas.find({ "precio": { $gt: 1000 } }).sort({ "precio": -1 });\n\n// 2. Incrementar stock en +10 unidades a todos los artículos\ndb.almacen.updateMany({}, { $inc: { "stock": 10 } });\n\n// 3. Buscar usuarios que vivan en Chilpancingo o Acapulco\ndb.usuarios.find({ "ciudad": { $in: ["Chilpancingo", "Acapulco"] } });\n\n// 4. Agregar una nota nueva a una lista de registros\ndb.bitacora.updateOne(\n  { "id": 505 },\n  { $push: { "notas": "Revisión técnica completada" } }\n);\n\n// 5. Analizar rendimiento de búsqueda\ndb.usuarios.find({ "email": "er@mail.com" }).explain("executionStats");`,
-                exercise: `<strong>Ejercicios de Consultas y Operadores:</strong><br><br>
-                           <strong>Ejercicio 1:</strong> Escribe la consulta para buscar documentos en 'productos' que tengan un precio mayor a 200 pero que NO sean de la marca 'Sony'.<br><br>
-                           <strong>Ejercicio 2:</strong> Actualiza todos los alumnos del grupo '4AP' incrementando su 'inasistencias' en +1.<br><br>
-                           <strong>Ejercicio 3:</strong> Diseña una sentencia que busque a los usuarios con edad entre 18 y 25 años, ordenados de forma descendente por nombre y limitando el resultado a solo los primeros 5.<br><br>
-                           <strong>Ejercicio 4:</strong> Agrega el valor "Mantenimiento Preventivo" a un arreglo llamado 'servicios' dentro de la colección 'maquinas'.`
+                        <strong>3. Métodos de Ordenamiento y Límite:</strong>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-3 mb-6">
+                            <li><strong>sort()</strong>: Ordena resultados (1: Ascendente, -1: Descendente). <br> <em>Ej: find().sort({ precio: -1 })</em></li>
+                            <li><strong>limit()</strong>: Restringe la cantidad de documentos devueltos. <br> <em>Ej: find().limit(5)</em></li>
+                        </ul>
+
+                        <strong>4. Proyección (Campos específicos):</strong>
+                        <p class="text-slate-600 text-sm mb-2 italic">Permite elegir qué columnas queremos ver.</p>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-2 mb-6">
+                             <li><strong>Inclusión</strong>: <code>find({}, { nombre: 1, email: 1 })</code></li>
+                             <li><strong>Exclusión</strong>: <code>find({}, { password: 0 })</code></li>
+                        </ul>
+                        
+                        <strong>5. Operadores de Actualización:</strong>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-2">
+                            <li><strong>$set / $inc</strong>: Modifica o incrementa valores.</li>
+                            <li><strong>$push</strong>: Agrega elementos a un arreglo.</li>
+                        </ul>`,
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?auto=format&fit=crop&q=80&w=800", 
+                concepts: ["Logical $and / $or", "Comparison Ops", "Sorting", "Pagination Limit", "Field Projection"],
+                code: `// EJEMPLOS DE COMANDOS COMPLEMENTARIOS\n\n// 1. Filtrar con OR y Proyección (No mostrar _id)\ndb.usuarios.find(\n  { $or: [{ "sexo": "F" }, { "edad": { $gte: 18 } }] },\n  { "nombre": 1, "email": 1, "_id": 0 } \n);\n\n// 2. Buscar con AND, ordenar por precio y limitar a los 3 mejores\ndb.productos.find({\n  "categoria": "Tech",\n  "precio": { $lt: 5000 }\n}).sort({ "precio": -1 }).limit(3);\n\n// 3. Buscar todo excepto un estatus específico\ndb.pedidos.find({ "estado": { $ne: "Cancelado" } });\n\n// 4. Actualizar con incremento (Likes +1)\ndb.posts.updateOne({ "_id": 101 }, { $inc: { "likes": 1 } });`,
+                exercise: `<strong>Tarea Formativa del Alumno:</strong><br><br>
+                           <strong>Ejercicio 1:</strong> Escribe la consulta para buscar documentos en 'productos' que tengan un precio mayor a 200 ($gt) pero que NO sean de la marca 'Sony' ($ne).<br><br>
+                           <strong>Ejercicio 2:</strong> Diseña una sentencia que busque a los usuarios con edad entre 18 y 25 años ($and / $gte / $lte), ordenados de forma descendente por nombre y limitando el resultado a solo los primeros 5.`
             },
             5: {
                 title: "Evaluación Integral del Bloque",
@@ -415,8 +423,8 @@
                         </ul>`,
                 image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Exam Success", "Portfolio Delivery", "Final Review", "Skills Validation"],
-                code: `// Resumen de Operadores para el Examen:\n- $set / $inc (Actualizaciones)\n- $push / $pull (Arreglos)\n- $gt, $lt, $gte, $lte (Comparación)\n- createIndex() (Rendimiento)`,
-                exercise: "<strong>Reto 5.1:</strong> Revise su portafolio. Asegúrese de que sus scripts de diseño (Semana 2) y sus consultas de optimización (Semana 4) estén documentados con su nombre."
+                code: `// Resumen de Operadores para el Examen:\n- $set / $inc (Actualizaciones)\n- $push / $pull (Arreglos)\n- $gt, $lt, $gte, $lte (Comparación)\n- sort() / limit() / Proyección`,
+                exercise: "<strong>Reto 5.1:</strong> Revise su portafolio. Asegúrese de que sus scripts de diseño (Semana 2) y sus consultas avanzadas (Semana 4) estén documentados."
             }
         };
 
@@ -463,7 +471,7 @@
 
                     <div class="space-y-8">
                         <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
-                            <img src="${d.image}" alt="Concepto Visual" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000">
+                            <img src="${d.image}" alt="Concepto Visual Técnico" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000" onerror="this.src='https://placehold.co/800x600/0f172a/ffffff?text=CBTis+134+NoSQL'">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">Entorno Profesional NoSQL</p>
