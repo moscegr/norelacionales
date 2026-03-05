@@ -154,7 +154,7 @@
                 <span>Semana 04</span>
             </button>
             <button onclick="switchWeek(5)" id="tab5" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
-                <span class="opacity-60 text-[9px] mb-1 italic">V. Evaluación</span>
+                <span class="opacity-60 text-[9px] mb-1 italic">V. Diagramación</span>
                 <span>Semana 05</span>
             </button>
         </div>
@@ -245,7 +245,7 @@
                                 }
                             </div>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=800", 
+                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Conceptos Críticos", "Equivalencias", "Tabla vs Documento", "SGBD"],
                 code: `// COMPARATIVA VISUAL SQL VS NOSQL\n\n// 1. SQL (Fila rígida en tabla)\n// | ID | NOMBRE | TEL       |\n// |----|--------|-----------|\n// | 1  | Ana    | NULL      |\n\n// 2. MONGODB (Documento flexible en colección)\n{\n  "_id": 1,\n  "nombre": "Ana",\n  "habilidades": ["C#", "NoSQL"],\n  // No se guarda el campo 'tel' si no existe, ahorrando espacio.\n}`,
                 exercise: `<strong>Actividades de Reforzamiento:</strong><br><br>
@@ -412,21 +412,34 @@
                            Basado en los ejemplos de la terminal, implementa en tu clúster de Atlas las consultas necesarias para encontrar productos que tengan stock crítico (menor a 5) pero que el precio sea mayor a 100 pesos.`
             },
             5: {
-                title: "Evaluación Integral del Bloque",
-                subtitle: "Semana 5: Verificación de Aprendizaje",
-                theory: `Momento de consolidar las competencias adquiridas en el diseño y gestión de datos no estructurados.
+                title: "Diagramación y Modelado Visual NoSQL",
+                subtitle: "Semana 5: Arquitectura Lógica de Documentos",
+                theory: `Antes de escribir una sola línea de código en MongoDB, un arquitecto de datos profesional debe visualizar la estructura.
                         <br><br>
-                        <strong>Dimensiones a Evaluar:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
-                            <li><strong>Dominio Teórico:</strong> Examen sobre SGBD, Teorema CAP y Tipología NoSQL.</li>
-                            <li><strong>Habilidad Práctica:</strong> Configuración de clústeres, seguridad y sentencias CRUD avanzados.</li>
-                            <li><strong>Diseño:</strong> Modelado de esquemas JSON funcionales.</li>
-                            <li><strong>Evidencias:</strong> Portafolio completo con capturas de pantalla de tus ejecuciones en Atlas.</li>
+                        <strong>1. El Valor del Diagrama:</strong>
+                        <p class="text-slate-600 text-sm mb-4 italic">A diferencia de SQL donde usamos Diagramas Entidad-Relación (DER), en NoSQL diagramamos <strong>Estructuras de Documentos</strong>. El objetivo es visualizar qué datos irán incrustados (Embedded) y cuáles vinculados (Referenced).</p>
+                        
+                        <strong>2. Herramientas de Diagramación:</strong>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-4 mb-6">
+                            <li><strong>CryptPad (Whiteboard):</strong> Herramienta colaborativa y cifrada ideal para el diseño rápido de esquemas en equipo. Permite dibujar jerarquías de documentos JSON de forma fluida.</li>
+                            <li><strong>Mermaid.js:</strong> Permite crear diagramas usando código simple, ideal para documentar repositorios de bases de datos.</li>
+                            <li><strong>Lucidchart / Draw.io:</strong> Herramientas clásicas para diagramas de flujo y arquitectura de red.</li>
+                        </ul>
+
+                        <strong>3. ¿Qué diagramamos en NoSQL?:</strong>
+                        <ul class="list-disc ml-8 text-slate-700 text-sm space-y-2">
+                             <li>Jerarquía de objetos (Documentos anidados).</li>
+                             <li>Relaciones de 1 a N (Cómo se vinculan las colecciones).</li>
+                             <li>Flujo de datos desde la aplicación hacia la base de datos.</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
-                concepts: ["Exam Success", "Portfolio Delivery", "Final Review", "Skills Validation"],
-                code: `// Resumen de Operadores para el Examen:\n- $set / $inc (Actualizaciones)\n- $push / $pull (Arreglos)\n- $gt, $lt, $gte, $lte (Comparación)\n- sort() / limit() / Proyección`,
-                exercise: "<strong>Reto 5.1:</strong> Revise su portafolio. Asegúrese de que sus scripts de diseño (Semana 2) y sus consultas avanzadas (Semana 4) estén documentados."
+                image: "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?auto=format&fit=crop&q=80&w=800", 
+                concepts: ["NoSQL Diagrams", "CryptPad Modeling", "Visual Architecture", "Schema Design"],
+                code: `// EJEMPLO DE DIAGRAMACIÓN EN CÓDIGO (MERMAID)\n// Esta estructura representa un documento jerárquico\n\n  Documento_Usuario {\n    string _id\n    string nombre\n    Object configuracion {\n       string tema\n       boolean notificaciones\n    }\n    Array proyectos [\n       "NoSQL",\n       "CryptPad"\n    ]\n  }`,
+                exercise: `<strong>Laboratorio de Modelado Visual:</strong><br><br>
+                           <strong>Actividad 1:</strong> Crea una cuenta o entra de forma anónima a <strong>CryptPad.fr</strong> y abre un 'Whiteboard' (Pizarra).<br><br>
+                           <strong>Actividad 2:</strong> Basado en el sistema de la Tienda OXXO, dibuja el esquema visual de un documento 'Venta'. Debe mostrar claramente cómo se incrustan los productos vendidos dentro de la venta (Embedding).<br><br>
+                           <strong>Actividad 3:</strong> Representa visualmente una relación de Referencia (Linking) entre una colección de 'Proveedores' y una de 'Productos'.<br><br>
+                           <strong>Actividad 4:</strong> Exporta tu diagrama como imagen y adjúntalo a tu portafolio técnico.`
             }
         };
 
