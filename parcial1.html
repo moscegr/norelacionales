@@ -245,7 +245,7 @@
                                 }
                             </div>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop", 
+                image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&q=80&w=800", 
                 concepts: ["Conceptos Críticos", "Equivalencias", "Tabla vs Documento", "SGBD"],
                 code: `// COMPARATIVA VISUAL SQL VS NOSQL\n\n// 1. SQL (Fila rígida en tabla)\n// | ID | NOMBRE | TEL       |\n// |----|--------|-----------|\n// | 1  | Ana    | NULL      |\n\n// 2. MONGODB (Documento flexible en colección)\n{\n  "_id": 1,\n  "nombre": "Ana",\n  "habilidades": ["C#", "NoSQL"],\n  // No se guarda el campo 'tel' si no existe, ahorrando espacio.\n}`,
                 exercise: `<strong>Actividades de Reforzamiento:</strong><br><br>
@@ -316,7 +316,7 @@
 }
                             </div>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=800&auto=format&fit=crop", 
+                image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=800&auto=format&fit=crop", 
                 concepts: ["Necesidades del Sistema", "Esquemas Flexibles", "Embedding vs Referencing", "JSON Design"],
                 code: `// MODELADO DE REFERENCIA (LINKING)\n// Colección: alumnos\n{\n  "_id": ObjectId("65c1a2b3..."),\n  "nombre": "Luis Garcia"\n}\n\n// Colección: calificaciones\n{\n  "alumno_id": ObjectId("65c1a2b3..."), // Vínculo manual\n  "materia": "NoSQL",\n  "calif": 10\n}`,
                 exercise: `<strong>Actividades de Diseño NoSQL:</strong><br><br>
@@ -384,30 +384,32 @@
                             <li><strong>$or</strong>: Basta con que se cumpla una de las condiciones. <br> <em>Ej: find({ $or: [{role: "admin"}, {role: "editor"}] })</em></li>
                         </ul>
 
-                        <strong>3. Métodos de Ordenamiento y Límite:</strong>
+                        <strong>3. Métodos de Cursor (Formato):</strong>
                         <ul class="list-disc ml-8 text-slate-700 text-sm space-y-3 mb-6">
                             <li><strong>sort()</strong>: Ordena resultados (1: Ascendente, -1: Descendente). <br> <em>Ej: find().sort({ precio: -1 })</em></li>
                             <li><strong>limit()</strong>: Restringe la cantidad de documentos devueltos. <br> <em>Ej: find().limit(5)</em></li>
                         </ul>
 
                         <strong>4. Proyección (Campos específicos):</strong>
-                        <p class="text-slate-600 text-sm mb-2 italic">Permite elegir qué columnas queremos ver.</p>
+                        <p class="text-slate-600 text-sm mb-2 italic">Permite elegir qué campos queremos ver (1 para incluir, 0 para ocultar).</p>
                         <ul class="list-disc ml-8 text-slate-700 text-sm space-y-2 mb-6">
-                             <li><strong>Inclusión</strong>: <code>find({}, { nombre: 1, email: 1 })</code></li>
-                             <li><strong>Exclusión</strong>: <code>find({}, { password: 0 })</code></li>
+                             <li><strong>Ejemplo</strong>: <code>find({}, { nombre: 1, stock: 1 })</code></li>
                         </ul>
                         
                         <strong>5. Operadores de Actualización:</strong>
                         <ul class="list-disc ml-8 text-slate-700 text-sm space-y-2">
-                            <li><strong>$set / $inc</strong>: Modifica o incrementa valores.</li>
+                            <li><strong>$set / $inc</strong>: Modifica o incrementa valores numéricos.</li>
                             <li><strong>$push</strong>: Agrega elementos a un arreglo.</li>
                         </ul>`,
-                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", 
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?auto=format&fit=crop&q=80&w=800", 
                 concepts: ["Logical $and / $or", "Comparison Ops", "Sorting", "Pagination Limit", "Field Projection"],
-                code: `// EJEMPLOS DE COMANDOS COMPLEMENTARIOS\n\n// 1. Filtrar con OR y Proyección (No mostrar _id)\ndb.usuarios.find(\n  { $or: [{ "sexo": "F" }, { "edad": { $gte: 18 } }] },\n  { "nombre": 1, "email": 1, "_id": 0 } \n);\n\n// 2. Buscar con AND, ordenar por precio y limitar a los 3 mejores\ndb.productos.find({\n  "categoria": "Tech",\n  "precio": { $lt: 5000 }\n}).sort({ "precio": -1 }).limit(3);\n\n// 3. Buscar todo excepto un estatus específico\ndb.pedidos.find({ "estado": { $ne: "Cancelado" } });\n\n// 4. Actualizar con incremento (Likes +1)\ndb.posts.updateOne({ "_id": 101 }, { $inc: { "likes": 1 } });`,
+                code: `// EJEMPLO: CASO PRÁCTICO TIENDA OXXO\n// Documento Sugerido:\n// { "nombre": "Coca Cola", "precio": 18, "stock": 50, "categoria": "Bebidas", "marca": "Femsa" }\n\n// 1. Mostrar productos con stock menor a 20\ndb.oxxo.find({ "stock": { $lt: 20 } });\n\n// 2. Productos que cuesten más de 1000 y menos de 10000\ndb.oxxo.find({ "precio": { $gt: 1000, $lt: 10000 } });\n\n// 3. Ordenar productos por nombre alfabéticamente\ndb.oxxo.find().sort({ "nombre": 1 });\n\n// 4. Productos que sean 'Electrónica' o tengan stock > 40\ndb.oxxo.find({ $or: [{ "categoria": "Electrónica" }, { "stock": { $gt: 40 } }] });\n\n// 5. Mostrar solo nombre y stock de productos con precio > 500\ndb.oxxo.find({ "precio": { $gt: 500 } }, { "nombre": 1, "stock": 1, "_id": 0 });\n\n// 6. Mostrar los 2 productos más baratos\ndb.oxxo.find().sort({ "precio": 1 }).limit(2);\n\n// 7. Categorías donde el promedio (campo precalculado) sea > 3000\ndb.stats.find({ "promedio_categoria": { $gt: 3000 } });`,
                 exercise: `<strong>Tarea Formativa del Alumno:</strong><br><br>
                            <strong>Ejercicio 1:</strong> Escribe la consulta para buscar documentos en 'productos' que tengan un precio mayor a 200 ($gt) pero que NO sean de la marca 'Sony' ($ne).<br><br>
-                           <strong>Ejercicio 2:</strong> Diseña una sentencia que busque a los usuarios con edad entre 18 y 25 años ($and / $gte / $lte), ordenados de forma descendente por nombre y limitando el resultado a solo los primeros 5.`
+                           <strong>Ejercicio 2:</strong> Diseña una sentencia que busque a los usuarios con edad entre 18 y 25 años ($and / $gte / $lte), ordenados de forma descendente por nombre y limitando el resultado a solo los primeros 5.<br><br>
+                           <hr class="my-4 border-blue-200">
+                           <strong>Caso Especial OXXO (Evaluación):</strong><br>
+                           Basado en los ejemplos de la terminal, implementa en tu clúster de Atlas las consultas necesarias para encontrar productos que tengan stock crítico (menor a 5) pero que el precio sea mayor a 100 pesos.`
             },
             5: {
                 title: "Evaluación Integral del Bloque",
