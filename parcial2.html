@@ -68,17 +68,18 @@
         }
 
         .theory-card strong { color: #4338ca; font-weight: 700; }
-        .example-box { border-left: 4px solid #6366f1; background-color: #f5f3ff; padding: 1rem; border-radius: 0.5rem; }
+        .example-box { border-left: 4px solid #6366f1; background-color: #f5f3ff; padding: 1.5rem; border-radius: 0.75rem; }
         
         /* Diagram styling */
         .diagram-node {
             background: white;
-            border: 2px solid #e0e7ff;
+            border: 2px solid #6366f1;
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             font-size: 0.75rem;
             text-align: center;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            min-width: 100px;
         }
         .diagram-arrow {
             color: #6366f1;
@@ -86,6 +87,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .step-pill {
+            background: #4338ca;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-right: 8px;
+        }
+
+        .nested-exercise {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -117,7 +139,7 @@
             </p>
         </div>
         <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-            <i class="fas fa-layer-group text-[25rem] absolute -bottom-20 -left-20"></i>
+            <i class="fas fa-layer-group text-[25rem] absolute -bottom-20 -right-20"></i>
         </div>
     </header>
 
@@ -164,117 +186,128 @@
     <script>
         const contentData = {
             6: {
-                title: "Introducción al Aggregation Framework",
-                subtitle: "Semana 6: Concepto de Tubería (Pipeline)",
-                theory: `El **Aggregation Framework** es el motor de procesamiento de MongoDB. Imagínalo como una **banda transportadora** de una fábrica: los datos entran crudos al principio y pasan por diferentes estaciones (**Stages**) donde se filtran, transforman y moldean.
+                title: "Inmersión al Aggregation Framework",
+                subtitle: "Semana 6: Teoría de la Tubería de Datos",
+                theory: `Para procesar Big Data, el comando <code>find()</code> es insuficiente. El **Framework de Agregación** permite ejecutar análisis complejos directamente en el servidor, devolviendo solo el resultado final.
                         <br><br>
-                        <strong>Componentes de la Tubería:</strong>
+                        <strong>Etapas Fundamentales (Stages):</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>$match:</strong> Filtra los documentos de la misma forma que <code>find()</code>. Es el primer paso para procesar solo lo necesario.</li>
-                            <li><strong>$project:</strong> Modifica la estructura de salida. Renombra campos o crea nuevos basados en cálculos.</li>
-                            <li><strong>$sort / $limit:</strong> Ordena y restringe el flujo de datos procesados.</li>
+                            <li><strong>$match:</strong> Filtro de entrada. Elimina documentos que no cumplen criterios antes de procesarlos.</li>
+                            <li><strong>$project:</strong> El escultor. Permite renombrar campos, crear calculados (ej. Precio * Stock) o extraer partes de fechas con <code>$year</code> o <code>$month</code>.</li>
+                            <li><strong>$limit / $skip:</strong> Control de flujo para paginación de datos a gran escala.</li>
                         </ul>
                         <br>
                         <div class="p-5 bg-indigo-50 rounded-2xl border border-indigo-200">
-                            <h5 class="font-bold text-indigo-900 mb-4 uppercase text-[10px] tracking-widest text-center">Diagrama de Flujo del Pipeline</h5>
-                            <div class="flex items-center justify-between gap-2 max-w-md mx-auto">
-                                <div class="diagram-node">COLECCIÓN <br> (Datos Brutos)</div>
-                                <div class="diagram-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                                <div class="diagram-node bg-indigo-100">$match <br> (Filtrar)</div>
-                                <div class="diagram-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                                <div class="diagram-node bg-indigo-100">$project <br> (Moldear)</div>
-                                <div class="diagram-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
-                                <div class="diagram-node font-bold border-indigo-500">RESULTADO</div>
+                            <h5 class="font-bold text-indigo-900 mb-4 uppercase text-[10px] tracking-widest text-center">Tubería de Procesamiento</h5>
+                            <div class="flex flex-wrap items-center justify-center gap-4">
+                                <div class="diagram-node">ENTRADA (10k docs)</div>
+                                <div class="diagram-arrow">➔</div>
+                                <div class="diagram-node bg-blue-50">$match (Filter)</div>
+                                <div class="diagram-arrow">➔</div>
+                                <div class="diagram-node bg-emerald-50">$project (Shape)</div>
+                                <div class="diagram-arrow">➔</div>
+                                <div class="diagram-node font-bold border-indigo-500 text-indigo-600">RESULTADO (50 docs)</div>
                             </div>
+                        </div>
+                        <br>
+                        <strong>Ejemplo de Campo Calculado:</strong>
+                        <div class="example-box mt-2">
+                            <p class="text-sm">Si vendemos productos en una ferretería y queremos saber el valor total de cada producto en inventario:</p>
+                            <code class="text-xs bg-slate-200 p-1 rounded font-mono">"{ $project: { subtotal: { $multiply: ['$precio', '$stock'] } } }"</code>
                         </div>`,
-                image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=800&auto=format&fit=crop",
-                concepts: ["Aggregation Pipeline", "Stages", "$match", "$project"],
-                code: `// EJEMPLO: Filtrar alumnos aprobados y mostrar solo nombre y calif\ndb.alumnos.aggregate([\n  { \n    $match: { "promedio": { $gte: 6 } } \n  },\n  { \n    $project: { \n      "_id": 0, \n      "estudiante": "$nombre", \n      "nota_final": "$promedio" \n    } \n  }\n]);`,
-                exercise: `<strong>Laboratorio de Pipeline:</strong><br><br>
-                           <strong>Contexto:</strong> Tienes una colección de 'Ventas'.<br><br>
-                           <strong>Ejercicio:</strong> Crea una tubería que busque ventas mayores a $500, ordénalas de la más cara a la más barata y muestra solo el campo 'cliente' y 'total'.`
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop",
+                concepts: ["Aggregation Pipeline", "Stages", "Data Streams", "$project Logic"],
+                code: `// CONTEXTO: SISTEMA FERRETERO\n// Reto: Productos caros con cálculo de IVA\n\ndb.productos.aggregate([\n  { \n    "$match": { "precio": { "$gt": 1000 }, "activo": true } \n  },\n  { \n    "$project": { \n      "_id": 0, \n      "producto": { "$toUpper": "$nombre" }, \n      "stock_actual": "$stock",\n      "precio_iva": { "$multiply": ["$precio", 1.16] },\n      "es_escasez": { "$lt": ["$stock", 5] } \n    } \n  }\n]);`,
+                exercise: `<strong>Laboratorio Extendido:</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Filtros Compuestos:</strong> Filtra productos de 'Electrónica' que tengan stock entre 10 y 50 unidades y que el proveedor sea "Sony".<br><br>
+                           <span class="step-pill">2</span> <strong>Transformación de Datos:</strong> Crea una proyección que oculte el ID, ponga el nombre en mayúsculas y cree un campo "etiqueta_precio" que diga "CARO" si el precio > 5000.<br><br>
+                           <span class="step-pill">3</span> <strong>Análisis Temporal:</strong> Suponiendo que tienes un campo 'fecha_ingreso', usa "$project" y "$month" para mostrar el nombre del producto y el mes en que entró al almacén.<br><br>
+                           <span class="step-pill">4</span> <strong>Paginación Dinámica:</strong> Crea una consulta que ignore los primeros 10 registros (<code>$skip</code>) y devuelva solo los siguientes 5 (<code>$limit</code>), mostrando únicamente el nombre y el precio.<br><br>
+                           <span class="step-pill">5</span> <strong>Lógica de Stock:</strong> Genera un reporte que use <code>$project</code> para mostrar un campo "estado" que sea "REABASTECER" si el stock es menor a 10, y "OK" en caso contrario (usa <code>$cond</code>).<br><br>
+                           <span class="step-pill">6</span> <strong>Concatenación Profesional:</strong> Utiliza el operador <code>$concat</code> dentro de una proyección para unir el campo "marca" y "nombre" en un solo campo llamado "identificador_unico".`
             },
             7: {
-                title: "Agrupamiento y Acumuladores",
-                subtitle: "Semana 7: Análisis de Datos Masivos",
-                theory: `Aquí es donde MongoDB se convierte en una herramienta de Business Intelligence. Con **$group**, podemos resumir millones de documentos en estadísticas útiles.
+                title: "Análisis de Datos: Agrupamiento Profundo",
+                subtitle: "Semana 7: Inteligencia de Negocios NoSQL",
+                theory: `La etapa **$group** es el motor estadístico de MongoDB. Permite resumir información masiva en métricas de negocio accionables.
                         <br><br>
-                        <strong>Acumuladores Clave:</strong>
+                        <strong>Acumuladores Avanzados:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>$sum:</strong> Suma valores o cuenta documentos (usando 1).</li>
-                            <li><strong>$avg:</strong> Calcula el promedio aritmético de un campo numérico.</li>
-                            <li><strong>$max / $min:</strong> Encuentra los valores extremos del grupo.</li>
+                            <li><strong>$push:</strong> Crea un arreglo con los valores de los documentos agrupados. Útil para ver "todos los productos vendidos por un cajero".</li>
+                            <li><strong>$addToSet:</strong> Igual que push, pero evita duplicados (crea un conjunto único).</li>
+                            <li><strong>$sum / $avg:</strong> Cálculos matemáticos básicos sobre el grupo.</li>
                         </ul>
                         <br>
-                        <strong>Transformación con $unwind:</strong>
-                        <p class="text-sm text-slate-600 italic">Si un documento tiene un arreglo (ej: materias: ["A", "B"]), <strong>$unwind</strong> lo "desenrolla" creando un documento individual por cada materia para poder contarlas por separado.</p>`,
+                        <strong>Desenrollado de Arreglos ($unwind):</strong>
+                        <p class="text-sm text-slate-600 italic">Si un documento tiene un arreglo de etiquetas, $unwind crea una copia del documento por cada etiqueta. Esto permite agrupar por etiqueta individualmente.</p>`,
                 image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop",
-                concepts: ["$group", "Accumulators", "$unwind", "Data Reshaping"],
-                code: `// EJEMPLO: Calcular promedio de precio por categoría\ndb.productos.aggregate([\n  { \n    $group: { \n      "_id": "$categoria", \n      "total_articulos": { $sum: 1 },\n      "precio_promedio": { $avg: "$precio" }\n    } \n  }\n]);`,
-                exercise: `<strong>Reto de Analítica:</strong><br><br>
-                           <strong>Contexto:</strong> Colección 'Restaurante'. Cada documento tiene un arreglo 'platillos'.<br><br>
-                           <strong>Ejercicio:</strong> Usa <code>$unwind</code> para separar los platillos y luego <code>$group</code> para contar cuántas veces se ha vendido cada platillo en total.`
+                concepts: ["$group", "Accumulators", "$unwind", "BI Analytics"],
+                code: `// CONTEXTO: TIENDA OXXO\n// Reto: Ventas totales por categoría y lista de productos únicos\n\ndb.ventas.aggregate([\n  { "$unwind": "$productos" }, // Desglosa lista de productos\n  { \n    "$group": { \n      "_id": "$productos.categoria", \n      "total_venta": { "$sum": "$productos.precio" },\n      "nombres_productos": { "$addToSet": "$productos.nombre" }\n    } \n  }\n]);`,
+                exercise: `<strong>Laboratorio de Estadísticas (8 Horas):</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Resumen Financiero (2h):</strong> Calcula el promedio de precio y el total de stock agrupado por "Proveedor".<br><br>
+                           <span class="step-pill">2</span> <strong>Análisis de Preferencias (3h):</strong> En una colección de 'Usuarios', agrupa por 'Ciudad' y usa <code>$push</code> para listar los nombres de todos los usuarios de esa ciudad.<br><br>
+                           <span class="step-pill">3</span> <strong>Top Mensual (3h):</strong> Agrupa las ventas por mes y año, calcula el total recaudado y ordena los meses de mayor a menor ganancia.`
             },
             8: {
-                title: "Relacionamiento: $lookup",
-                subtitle: "Semana 8: Uniendo Colecciones (Left Outer Join)",
-                theory: `Aunque MongoDB es No Relacional, a veces necesitamos unir datos de dos colecciones diferentes. Para eso existe **$lookup**.
+                title: "Uniones y Relacionamiento ($lookup)",
+                subtitle: "Semana 8: Modelado Relacional en NoSQL",
+                theory: `**$lookup** permite traer datos de otras colecciones. Aunque MongoDB prefiere el *Embedding*, hay casos (como catálogos de proveedores o perfiles de usuario) donde el *Linking* es necesario.
                         <br><br>
-                        <strong>Funcionamiento de $lookup:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
-                            <li><strong>from:</strong> La colección con la que queremos unirnos.</li>
-                            <li><strong>localField:</strong> El campo en la colección actual (ej: cliente_id).</li>
-                            <li><strong>foreignField:</strong> El campo en la otra colección (ej: _id).</li>
-                            <li><strong>as:</strong> El nombre del nuevo campo (arreglo) donde se guardarán los resultados encontrados.</li>
-                        </ul>
-                        <br>
+                        <strong>Sintaxis de Tubería Interna (Avanzado):</strong>
+                        <p class="text-sm text-slate-700 mb-4">Podemos usar <code>pipeline</code> dentro de un lookup para filtrar los datos de la colección externa antes de unirlos, optimizando la memoria RAM del servidor.</p>
                         <div class="example-box">
-                            <i class="fas fa-link text-indigo-600 mr-2"></i><strong>Diagrama Lógico:</strong><br>
-                            <span class="text-xs">Colección VENTAS (id_producto) ───▶ Colección PRODUCTOS (_id) = RESULTADO UNIDO</span>
+                            <i class="fas fa-link text-indigo-600 mr-2"></i><strong>Lógica de Unión:</strong><br>
+                            <span class="text-xs">DOC PRINCIPAL (localField) <---> DOC EXTERNO (foreignField) = ARREGLO DE RESULTADOS</span>
                         </div>`,
                 image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=800&auto=format&fit=crop",
-                concepts: ["$lookup", "Relational NoSQL", "Left Join", "Data Merging"],
-                code: `// EJEMPLO: Unir ventas con los datos del producto\ndb.ventas.aggregate([\n  {\n    $lookup: {\n      from: "productos",\n      localField: "sku_producto",\n      foreignField: "sku",\n      as: "detalle_producto"\n    }\n  }\n]);`,
-                exercise: `<strong>Laboratorio de Uniones:</strong><br><br>
-                           <strong>Contexto:</strong> Tienes colecciones 'Autores' y 'Libros'.<br><br>
-                           <strong>Ejercicio:</strong> Realiza un lookup para mostrar cada Autor junto con un arreglo de todos los Libros que ha escrito.`
+                concepts: ["Relational Joins", "$lookup Pipeline", "Data Merging", "Foreign Keys"],
+                code: `// CONTEXTO: SISTEMA DE PEDIDOS\n// Reto: Pedidos unidos con datos de clientes, ocultando datos sensibles\n\ndb.pedidos.aggregate([\n  {\n    "$lookup": {\n      "from": "clientes",\n      "localField": "id_cliente",\n      "foreignField": "_id",\n      "as": "info_cliente"\n    }\n  },\n  { "$unwind": "$info_cliente" },\n  { "$project": { "info_cliente.password": 0, "info_cliente.token": 0 } }\n]);`,
+                exercise: `<strong>Taller de Integración (8 Horas):</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Unión Simple (2h):</strong> Une la colección 'Productos' con 'Proveedores'. Muestra el nombre del producto y el teléfono del proveedor.<br><br>
+                           <span class="step-pill">2</span> <strong>Unión Doble (3h):</strong> Une 'Ventas' con 'Productos' y luego con 'Vendedores'. Crea un reporte donde se vea quién vendió qué cosa.<br><br>
+                           <span class="step-pill">3</span> <strong>Filtros en Unión (3h):</strong> Usa un lookup para traer solo los comentarios de una 'Publicación' que tengan más de 5 likes (Usa <code>pipeline</code> dentro del <code>$lookup</code>).`
             },
             9: {
                 title: "Estrategias de Indexación Avanzada",
-                subtitle: "Semana 9: Índices Multillave y Compuestos",
-                theory: `Un índice simple (un solo campo) no siempre es suficiente para consultas complejas.
+                subtitle: "Semana 9: Optimizando el Tiempo de Respuesta",
+                theory: `Los índices son la diferencia entre una consulta de 5 segundos y una de 5 milisegundos.
                         <br><br>
-                        <strong>Tipos de Índices Profesionales:</strong>
+                        <strong>Tipos de Índices en Producción:</strong>
                         <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>Compuestos:</strong> Indexan dos o más campos juntos. El orden importa (ej: {ciudad: 1, apellido: 1}). Optimiza búsquedas que filtran por ambos criterios.</li>
-                            <li><strong>Multillave:</strong> Se crean automáticamente cuando indexas un campo que contiene un **arreglo**.</li>
-                            <li><strong>TTL (Time To Live):</strong> Índices especiales que borran el documento automáticamente después de cierto tiempo (ideal para sesiones o logs).</li>
+                            <li><strong>Índice Compuesto:</strong> Indexa varios campos a la vez. Regla ESR: Equality (Igualdad), Sort (Orden), Range (Rango).</li>
+                            <li><strong>Índice Único:</strong> Garantiza que no haya duplicados (ej: correos electrónicos o CURP).</li>
+                            <li><strong>Índice TTL:</strong> Borra documentos automáticamente tras un tiempo (ideal para sesiones de usuario).</li>
+                            <li><strong>Índice Parcial:</strong> Solo indexa documentos que cumplen una condición (ahorra espacio en disco).</li>
                         </ul>`,
                 image: "https://images.unsplash.com/photo-1454165833762-0204b28c6797?q=80&w=800&auto=format&fit=crop",
-                concepts: ["Compound Index", "Multikey Index", "TTL Index", "Query ESR Rule"],
-                code: `// Crear índice compuesto (Ciudad asc, Edad desc)\ndb.usuarios.createIndex({ "ciudad": 1, "edad": -1 });\n\n// Crear índice TTL (Borrar en 1 hora / 3600 seg)\ndb.sesiones.createIndex({ "fecha_creacion": 1 }, { expireAfterSeconds: 3600 });`,
-                exercise: `<strong>Reto de Performance:</strong><br><br>
-                           <strong>Ejercicio:</strong> Si tienes una base de datos de 'Inmobiliaria' y los usuarios buscan por 'zona' y 'precio_maximo', ¿Cómo crearías el índice compuesto más eficiente? Escribe el comando.`
+                concepts: ["Compound Index", "TTL & Unique", "Partial Indexes", "ESR Rule"],
+                code: `// EJEMPLO: Configuración de Índices Profesionales\n\n// 1. Índice Compuesto para búsquedas de stock por tienda\ndb.inventario.createIndex({ "tienda_id": 1, "stock": -1 });\n\n// 2. Índice Parcial: Indexar solo productos de lujo para búsqueda rápida\ndb.productos.createIndex(\n  { "nombre": 1 },\n  { "partialFilterExpression": { "precio": { "$gt": 10000 } } }\n);`,
+                exercise: `<strong>Laboratorio de Rendimiento (8 Horas):</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Seguridad de Datos (2h):</strong> Crea un índice único para el campo 'sku' de tus productos. Intenta insertar un duplicado y documenta el error.<br><br>
+                           <span class="step-pill">2</span> <strong>Optimización de Sesiones (3h):</strong> Crea una colección 'logs' y configúrale un índice TTL para que los registros se borren automáticamente después de 24 horas.<br><br>
+                           <span class="step-pill">3</span> <strong>Búsqueda Multicriterio (3h):</strong> Crea el índice compuesto óptimo para buscar alumnos por 'especialidad' (Igualdad) y ordenarlos por 'promedio' (Orden).`
             },
             10: {
-                title: "Performance & Profiling",
+                title: "Profiling & Performance Tuning",
                 subtitle: "Semana 10: Auditoría de Consultas",
-                theory: `Como ingenieros, no solo hacemos que funcione, hacemos que sea rápido. El método **.explain()** es nuestro "rayo x" para ver qué hace el motor de base de datos.
+                theory: `Un ingeniero NoSQL audita su código. Usamos **.explain("executionStats")** para ver cómo trabaja el motor.
                         <br><br>
-                        <strong>Estados de Ejecución a vigilar:</strong>
-                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
-                            <li><strong>COLLSCAN:</strong> (Peligro) MongoDB leyó todos los documentos. Necesitas un índice urgente.</li>
-                            <li><strong>IXSCAN:</strong> (Éxito) MongoDB usó un índice para encontrar los datos.</li>
-                            <li><strong>ExecutionTimeMillis:</strong> El tiempo real que tardó la consulta. Debe ser lo más cercano a 0.</li>
+                        <strong>Análisis de Resultados:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-3 text-slate-700">
+                            <li><strong>COLLSCAN:</strong> Malo. Se leyó toda la colección.</li>
+                            <li><strong>IXSCAN:</strong> Bueno. Se usó un índice.</li>
+                            <li><strong>Covered Query:</strong> Excelente. MongoDB no tocó el disco duro; respondió usando solo los datos del índice en memoria RAM.</li>
                         </ul>
                         <br>
                         <strong>Capped Collections:</strong>
-                        <p class="text-sm text-slate-600 italic">Colecciones de tamaño fijo que funcionan como un círculo: cuando se llenan, los datos nuevos sobrescriben a los más viejos automáticamente.</p>`,
+                        <p class="text-sm text-slate-600 italic">Colecciones de tamaño fijo para streaming de datos (logs, chats, sensores) donde los datos viejos se borran automáticamente al llenarse el espacio.</p>`,
                 image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
-                concepts: ["Explain Plan", "Profiling", "Capped Collections", "Performance Tuning"],
-                code: `// Analizar una consulta paso a paso\ndb.ventas.find({ "total": { $gt: 5000 } }).explain("executionStats");\n\n// Crear una colección circular de 1MB máximo\ndb.createCollection("logs_sistema", { capped: true, size: 1048576 });`,
-                exercise: `<strong>Auditoría Técnica:</strong><br><br>
-                           <strong>Actividad:</strong> Ejecuta un <code>.explain()</code> en tu colección del OXXO para una búsqueda de precio. Toma captura del apartado 'winningPlan' y explica si se usó un índice (IXSCAN) o no (COLLSCAN).`
+                concepts: ["Execution Plan", "Covered Queries", "Capped Colls", "Query Tuning"],
+                code: `// EJEMPLO: Auditoría Técnica\n\n// Analizar si una consulta usa índices correctamente\ndb.usuarios.find({ "email": "er@mail.com" }).explain("executionStats");\n\n// Crear colección circular de 10MB para histórico de errores\ndb.createCollection("error_logs", { "capped": true, "size": 10485760, "max": 1000 });`,
+                exercise: `<strong>Evaluación de Eficiencia (8 Horas):</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Diagnóstico (2h):</strong> Ejecuta una búsqueda por nombre en tu base de datos y usa <code>explain()</code>. ¿Cuántos documentos examinó? Documenta el tiempo.<br><br>
+                           <span class="step-pill">2</span> <strong>Refactorización (3h):</strong> Crea un índice para ese campo y repite el proceso. Compara los milisegundos y los documentos examinados.<br><br>
+                           <span class="step-pill">3</span> <strong>Arquitectura de Logs (3h):</strong> Crea una Capped Collection para tu sistema OXXO que guarde los últimos 500 movimientos de caja.`
             }
         };
 
@@ -282,7 +315,7 @@
             // UI Update: Botones
             for(let i=6; i<=10; i++) {
                 const btn = document.getElementById('tab'+i);
-                btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
+                if(btn) btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
             }
             document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
 
@@ -303,7 +336,7 @@
                         
                         <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed theory-card">
                             <h4 class="font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 flex items-center">
-                                <i class="fas fa-book-open mr-2 text-indigo-600"></i> Marco Teórico
+                                <i class="fas fa-book-open mr-2 text-indigo-600"></i> Lección Teórica Detallada
                             </h4>
                             <div class="text-[17px] space-y-4">
                                 ${d.theory}
@@ -313,7 +346,7 @@
                         <div class="bg-indigo-600 p-8 rounded-3xl shadow-lg relative overflow-hidden text-white group border-b-8 border-indigo-900">
                             <i class="fas fa-terminal absolute -right-6 -bottom-6 text-9xl opacity-10 transition-transform group-hover:scale-110"></i>
                             <h4 class="font-black text-indigo-200 text-[10px] uppercase tracking-tighter mb-2">
-                                <i class="fas fa-laptop-code mr-1"></i> Reto de Laboratorio
+                                <i class="fas fa-laptop-code mr-1"></i> Retos Semanales (Laboratorio de Inmersión)
                             </h4>
                             <div class="text-white font-bold text-sm italic leading-snug">${d.exercise}</div>
                         </div>
@@ -321,7 +354,7 @@
 
                     <div class="space-y-8">
                         <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
-                            <img src="${d.image}" alt="Apoyo Visual" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000" onerror="this.src='https://placehold.co/800x600/1e1b4b/ffffff?text=NoSQL+Architecture'">
+                            <img src="${d.image}" alt="Concepto Visual Técnico" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000" onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop'">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-6 left-6 text-white">
                                 <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">CBTis 134 • Especialidad</p>
