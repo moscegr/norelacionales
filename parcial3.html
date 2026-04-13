@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcial III - Python & Streamlit - Ing. Garcia Ramos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+        
+        .gradient-header {
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+        }
+        
+        .week-tab {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .week-tab.active {
+            background-color: white;
+            color: #059669 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            font-weight: 800;
+        }
+
+        .code-container {
+            background-color: #1a1a1a;
+            position: relative;
+            border: 1px solid #2d2d2d;
+        }
+
+        .code-container::before {
+            content: "GOOGLE COLAB / PYTHON SCRIPT";
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #4b5563;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .concept-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .animate-content {
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .theory-card strong { color: #047857; font-weight: 700; }
+        .example-box { border-left: 4px solid #10b981; background-color: #f0fdf4; padding: 1.5rem; border-radius: 0.75rem; }
+        
+        .diagram-node {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.75rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            min-width: 110px;
+        }
+        .diagram-arrow {
+            color: #10b981;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-pill {
+            background: #059669;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+    <!-- Navegación -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="flex items-center space-x-2 text-emerald-600 hover:text-emerald-800 transition group">
+                    <i class="fas fa-home"></i>
+                    <span class="font-bold uppercase tracking-tighter text-sm">CBTis 134 • Inicio</span>
+                </a>
+                <div class="flex items-center space-x-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+                    <a href="parcial1.html" class="hover:text-emerald-600 transition">Parcial I</a>
+                    <a href="parcial2.html" class="hover:text-emerald-600 transition">Parcial II</a>
+                    <span class="text-emerald-600 border-b-2 border-emerald-600 pb-1">Parcial III</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Lección -->
+    <header class="gradient-header text-white py-16 px-4 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight uppercase italic">Parcial III: Data Science & Web Apps</h1>
+            <p class="text-emerald-100 text-lg opacity-95 max-w-2xl mx-auto italic leading-snug">
+                El poder de Python y Streamlit: <span class="text-white font-bold underline">Análisis de Datos, Conectividad Atlas y Dashboards Interactivos</span>.
+            </p>
+        </div>
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <i class="fab fa-python text-[25rem] absolute -bottom-20 -right-20"></i>
+        </div>
+    </header>
+
+    <!-- Navegación Semanal -->
+    <section class="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
+        <div class="bg-slate-200/60 backdrop-blur-xl p-1.5 rounded-2xl shadow-xl flex flex-wrap justify-center gap-1.5 border border-white/30">
+            <button onclick="switchWeek(11)" id="tab11" class="week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center">
+                <span class="opacity-60 text-[9px] mb-1 italic">I. Python Base</span>
+                <span>Semana 11</span>
+            </button>
+            <button onclick="switchWeek(12)" id="tab12" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">II. PyMongo</span>
+                <span>Semana 12</span>
+            </button>
+            <button onclick="switchWeek(13)" id="tab13" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">III. Pandas</span>
+                <span>Semana 13</span>
+            </button>
+            <button onclick="switchWeek(14)" id="tab14" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">IV. Streamlit</span>
+                <span>Semana 14</span>
+            </button>
+            <button onclick="switchWeek(15)" id="tab15" class="week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition">
+                <span class="opacity-60 text-[9px] mb-1 italic">V. Dashboard</span>
+                <span>Semana 15</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Contenedor Dinámico -->
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div id="week-content" class="animate-content"></div>
+    </main>
+
+    <footer class="bg-slate-950 text-slate-500 py-12 px-4 text-center border-t border-slate-900">
+        <div class="max-w-4xl mx-auto text-slate-400">
+            <p class="text-white font-bold text-lg mb-2 italic">Submódulo 2: Implementa Bases de Datos No Relacionales</p>
+            <p class="text-sm uppercase tracking-widest font-medium">Docente: Ing. Cruz Enrique Garcia Ramos • CBTis 134</p>
+        </div>
+    </footer>
+
+    <script>
+        const contentData = {
+            11: {
+                title: "Fundamentos de Python en Google Colab",
+                subtitle: "Semana 11: Preparando el Entorno de Ciencia de Datos",
+                theory: `Para conectar nuestra base de datos con aplicaciones modernas, utilizaremos **Python**, el lenguaje líder en datos. Trabajaremos en **Google Colab**, un entorno en la nube que no requiere instalación y permite escribir código en bloques (celdas).
+                        <br><br>
+                        <strong>Similitud con MongoDB:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li>En Python, los objetos JSON se llaman <strong>Diccionarios</strong> (<code>dict</code>). Funcionan exactamente igual con llaves <code>{}</code> y pares Clave: Valor.</li>
+                            <li>Los arreglos se llaman <strong>Listas</strong> (<code>list</code>) y usan corchetes <code>[]</code>.</li>
+                            <li>La indentación (espacios al inicio) es estricta; define qué código está dentro de un ciclo o condición.</li>
+                        </ul>
+                        <br>
+                        <div class="p-5 bg-emerald-50 rounded-2xl border border-emerald-200 text-center">
+                            <h5 class="font-bold text-emerald-900 mb-2 uppercase text-[10px] tracking-widest">Equivalencia Técnica</h5>
+                            <code class="text-sm text-emerald-700 font-mono">BSON (MongoDB) ↔ JSON (Web) ↔ Diccionarios (Python)</code>
+                        </div>`,
+                image: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=800&auto=format&fit=crop",
+                concepts: ["Google Colab", "Python Syntax", "Dictionaries", "Lists & Loops"],
+                code: `# EJEMPLO 1: Trabajando con Diccionarios en Colab\n\n# 1. Definir un producto OXXO como Diccionario Python\nproducto = {\n    "nombre": "Coca Cola 600ml",\n    "precio": 18.50,\n    "stock": 45,\n    "tags": ["Bebidas", "Refrescos"]\n}\n\n# 2. Imprimir valores\nprint("El producto es:", producto["nombre"])\nprint("Precio total en stock:", producto["precio"] * producto["stock"])\n\n# 3. Lista de productos y ciclo For\ninventario = [producto, {"nombre": "Gansito", "precio": 22.0, "stock": 10}]\n\nfor item in inventario:\n    print(f"Revisando: {item['nombre']}")\n\n# EJEMPLO 2: Contexto CBTis 134 (Docentes y Alumnos)\ndocente = {"nombre": "Ing. Garcia Ramos", "materia": "NoSQL", "grupos": ["5A", "5B"]}\nalumnos_cbtis = [{"nombre": "Ana", "promedio": 9.5}, {"nombre": "Luis", "promedio": 7.0}]\n\nfor alumno in alumnos_cbtis:\n    if alumno["promedio"] >= 8.0:\n        print(f"Alumno de Excelencia CBTis 134: {alumno['nombre']}")`,
+                exercise: `<strong>Laboratorio Python Base:</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Entorno:</strong> Entra a <a href="https://colab.research.google.com" target="_blank" class="text-blue-600 underline">colab.research.google.com</a> y crea un nuevo "Notebook".<br><br>
+                           <span class="step-pill">2</span> <strong>Diccionarios:</strong> Crea un diccionario en Python que represente a un "Cliente" con campos como nombre, edad y un arreglo de compras previas.<br><br>
+                           <span class="step-pill">3</span> <strong>Lógica:</strong> Usa un ciclo <code>for</code> y un condicional <code>if</code> para recorrer una lista de 3 productos e imprimir "Alerta de Stock" si alguno tiene menos de 15 unidades.<br><br>
+                           <span class="step-pill">4</span> <strong>Reto CBTis 134:</strong> Crea una lista de diccionarios para 3 docentes, incluyendo su especialidad. Usa un ciclo para imprimir solo los que impartan "Programación".`
+            },
+            12: {
+                title: "Conectividad en la Nube con PyMongo",
+                subtitle: "Semana 12: Conectando Python a MongoDB Atlas",
+                theory: `Para que Python "hable" con nuestra base de datos, usamos un **Driver** llamado **PyMongo**.
+                        <br><br>
+                        <strong>Pasos de Conexión y Operaciones CRUD:</strong>
+                        <ol class="list-decimal ml-5 mt-4 space-y-4 text-slate-700">
+                            <li><strong>Instalación:</strong> En Colab, usamos el comando especial <code>!pip install pymongo</code> en la primera celda.</li>
+                            <li><strong>URI de Conexión:</strong> Es la cadena secreta de Atlas que contiene tu usuario y contraseña.</li>
+                            <li><strong>Operaciones CRUD desde Python:</strong> Además de buscar (<code>find</code>), PyMongo nos permite usar <code>insert_one()</code>, <code>update_one()</code> y <code>delete_one()</code> directamente usando diccionarios como parámetros.</li>
+                        </ol>
+                        <br>
+                        <div class="example-box mt-4">
+                            <i class="fas fa-shield-alt text-emerald-600 mr-2"></i><strong>Seguridad:</strong> Nunca compartas tu URI de conexión. En producción, se usan "Variables de Entorno" para ocultarla.
+                        </div>`,
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=800&auto=format&fit=crop",
+                concepts: ["PyMongo", "MongoClient", "CRUD Operations", "Cloud Integration"],
+                code: `# EJEMPLO 1: Conectando a Atlas desde Colab\n\n# 1. Instalar la librería (Ejecutar en una celda sola)\n# !pip install pymongo\n\nimport pymongo\n\n# 2. Conectar usando tu URI de Atlas\nURI = "mongodb+srv://tu_usuario:tu_password@cluster0.mongodb.net/"\ncliente = pymongo.MongoClient(URI)\n\n# 3. Seleccionar Base de Datos y Colección\ndb = cliente["sistema_integral"]\ncoleccion = db["productos"]\n\n# 4. Probar conexión haciendo una búsqueda\nresultado = coleccion.find_one()\nprint("¡Conectado! El primer producto es:", resultado["nombre"])\n\n# --- EJEMPLO 2: OPERACIONES CRUD COMPLETAS ---\n\n# CREATE (CBTis 134)\ndb["alumnos"].insert_one({"nombre": "Carlos", "semestre": 5, "especialidad": "Programación"})\nprint("Alumno insertado exitosamente.")\n\n# READ (CBTis 134)\nalumnos_prog = list(db["alumnos"].find({"especialidad": "Programación"}))\nprint(f"Total de programadores: {len(alumnos_prog)}")\n\n# UPDATE (OXXO)\ndb["productos"].update_one({"nombre": "Coca Cola 600ml"}, {"$set": {"precio": 19.50}})\nprint("Precio actualizado en Atlas.")\n\n# DELETE (CBTis 134)\ndb["docentes"].delete_one({"nombre": "Profesor Inactivo"})`,
+                exercise: `<strong>Laboratorio de Conectividad y CRUD:</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Instalación:</strong> Instala PyMongo en tu Notebook de Colab.<br><br>
+                           <span class="step-pill">2</span> <strong>Conexión:</strong> Ve a Atlas, obtén tu "Connection String" de Python, reemplaza el usuario/password y pégalo en tu código.<br><br>
+                           <span class="step-pill">3</span> <strong>Consulta Total:</strong> Usa el comando <code>list(coleccion.find())</code> para descargar todos tus productos desde la nube y cuenta cuántos son usando <code>len()</code> en Python.<br><br>
+                           <span class="step-pill">4</span> <strong>Escritura de Datos:</strong> Crea una nueva celda en Colab y usa <code>insert_one()</code> para agregar a un compañero de clase a tu base de datos del CBTis.`
+            },
+            13: {
+                title: "Manipulación de Datos con Pandas",
+                subtitle: "Semana 13: Preparando datos para el Dashboard",
+                theory: `MongoDB nos entrega los datos crudos, pero para graficarlos en Python, la industria utiliza la librería **Pandas**. Pandas convierte los datos de Mongo en un **DataFrame** (una tabla inteligente similar a Excel).
+                        <br><br>
+                        <strong>Ventajas de Pandas:</strong>
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li>Permite limpiar datos faltantes fácilmente.</li>
+                            <li>Transforma columnas rápidamente (ej. convertir texto a números).</li>
+                            <li>Es el formato nativo que aceptan las librerías gráficas de Python.</li>
+                        </ul>
+                        <div class="flex flex-wrap items-center justify-center gap-4 mt-6">
+                            <div class="diagram-node">Mongo BSON</div>
+                            <div class="diagram-arrow">➔</div>
+                            <div class="diagram-node bg-emerald-100">Python List / Dict</div>
+                            <div class="diagram-arrow">➔</div>
+                            <div class="diagram-node font-bold border-emerald-500">Pandas DataFrame</div>
+                        </div>`,
+                image: "https://images.unsplash.com/photo-1551288049-bbda38a5f9a2?q=80&w=800&auto=format&fit=crop",
+                concepts: ["Pandas", "DataFrames", "Data Cleaning", "Data Filtering"],
+                code: `# EJEMPLO 1: De MongoDB a Pandas\nimport pandas as pd\nimport pymongo\n\n# (Asumiendo conexión activa en la variable 'coleccion')\n\n# 1. Traer datos de MongoDB\ndocumentos = list(coleccion.find())\n\n# 2. Convertir a DataFrame de Pandas\ndf_oxxo = pd.DataFrame(documentos)\n\n# 3. Limpieza: Eliminar la columna '_id' para no graficar basura\ndf_oxxo = df_oxxo.drop('_id', axis=1)\n\n# 4. Mostrar las primeras 5 filas (como en Excel)\nprint(df_oxxo.head())\n\n# --- EJEMPLO 2: Filtros y Agrupaciones en Pandas ---\n\n# Filtrar alumnos de excelencia (CBTis 134)\ndf_alumnos = pd.DataFrame(list(db["alumnos"].find()))\nexcelencia = df_alumnos[df_alumnos['promedio'] >= 9.0]\nprint("Alumnos Destacados:\\n", excelencia)\n\n# Agrupar productos OXXO por categoría para ver el total de stock\nstock_por_categoria = df_oxxo.groupby('categoria')['stock'].sum()\nprint("\\nStock total por categoría:\\n", stock_por_categoria)`,
+                exercise: `<strong>Laboratorio de Datos:</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Extracción:</strong> Descarga tus 50 registros de la colección principal a tu Colab.<br><br>
+                           <span class="step-pill">2</span> <strong>Conversión:</strong> Importa <code>pandas</code> y convierte esos datos en un DataFrame.<br><br>
+                           <span class="step-pill">3</span> <strong>Exploración:</strong> Utiliza los comandos <code>df.describe()</code> y <code>df.info()</code> de Pandas para ver estadísticas automáticas de tus productos (promedios, máximos y mínimos).<br><br>
+                           <span class="step-pill">4</span> <strong>Análisis Escolar:</strong> Trae una colección de alumnos a Pandas, filtra a los que requieren apoyo (promedio < 7) y guarda el resultado en una nueva variable.<br><br>
+                           <span class="step-pill">5</span> <strong>Totales:</strong> Agrupa tu inventario OXXO por 'proveedor' y suma el 'precio' total de cada grupo usando Pandas.`
+            },
+            14: {
+                title: "Introducción a Streamlit (UI & Botones)",
+                subtitle: "Semana 14: Diseño de Paneles Web Interactivos",
+                theory: `**Streamlit** es una librería revolucionaria que convierte un script de Python común en una página web interactiva sin necesidad de escribir HTML, CSS o JavaScript.
+                        <br><br>
+                        <strong>Diseño de Interfaz (Paneles y Botones):</strong><br>
+                        Streamlit permite organizar la pantalla y crear interactividad fácilmente:
+                        <ul class="list-disc ml-5 mt-4 space-y-4 text-slate-700">
+                            <li><code>st.columns()</code> y <code>st.tabs()</code>: Para dividir la pantalla en secciones o pestañas como un sistema profesional.</li>
+                            <li><code>st.info()</code>, <code>st.warning()</code>, <code>st.error()</code>: Muestran cuadros de alertas de colores al usuario.</li>
+                            <li><code>st.button()</code> y <code>st.text_input()</code>: Capturan la información del usuario y ejecutan acciones, ideal para construir operaciones CRUD amigables.</li>
+                        </ul>
+                        <br>
+                        <p class="text-sm text-slate-600 italic">En Colab probaremos la lógica de Streamlit. Luego, este código será el que subamos a internet para nuestra entrega final.</p>`,
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+                concepts: ["Streamlit UI", "Layouts & Columns", "Buttons & Inputs", "Rapid Prototyping"],
+                code: `# EJEMPLO 1: Código base para una App de Streamlit (app.py)\nimport streamlit as st\nimport pandas as pd\n\n# Configurar la página\nst.set_page_config(page_title="Mi Dashboard", layout="wide")\nst.title("📊 Panel de Control General")\n\n# Crear datos simulados\ndatos_demo = pd.DataFrame({"Productos": ["Coca Cola", "Gansito"], "Stock": [50, 15]})\nst.bar_chart(datos_demo.set_index("Productos"))\n\n# --- EJEMPLO 2: Diseño de Paneles, Botones y Entradas ---\nst.divider() # Línea divisoria\n\ncol1, col2 = st.columns(2) # Crear 2 columnas para organizar la pantalla\n\nwith col1:\n    st.info("🏫 Panel de Registro CBTis 134")\n    nombre_alumno = st.text_input("Nombre del Alumno")\n    promedio = st.slider("Promedio Escolar", 0.0, 10.0, 8.0)\n    if st.button("Guardar Alumno", type="primary"):\n        # Aquí iría el insert_one de PyMongo\n        st.success(f"¡Alumno {nombre_alumno} guardado con éxito en Mongo!")\n\nwith col2:\n    st.warning("🏪 Panel de Actualización OXXO")\n    producto_buscar = st.text_input("Buscar Producto a actualizar")\n    if st.button("Verificar Stock"):\n        # Aquí iría el find_one de PyMongo\n        st.write("Buscando en base de datos...")`,
+                exercise: `<strong>Laboratorio Visual:</strong><br><br>
+                           <span class="step-pill">1</span> <strong>Instalación local:</strong> Streamlit es para construir apps. Prepárate creando un archivo de texto llamado <code>app.py</code> con el código de ejemplo.<br><br>
+                           <span class="step-pill">2</span> <strong>Personalización:</strong> Agrega un comando <code>st.metric("Total Productos", "150", "+5 hoy")</code> para mostrar un indicador clave (KPI) grande en pantalla.<br><br>
+                           <span class="step-pill">3</span> <strong>Diseño de Interfaz:</strong> Revisa la documentación de Streamlit para agregar una barra lateral usando <code>st.sidebar</code> y coloca ahí tus filtros de búsqueda.`
+            },
+            15: {
+                title: "Proyecto Final: Dashboard CRUD Web",
+                subtitle: "Semana 15: Integración Total y Despliegue",
+                theory: `El objetivo final del semestre. Uniremos **PyMongo** (CRUD), **Pandas** (Tratamiento) y **Streamlit** (Visualización) en un solo archivo de Python y lo publicaremos en internet usando **GitHub** y **Streamlit Community Cloud**.
+                        <br><br>
+                        <strong>Pasos de Despliegue Profesional (Deploy):</strong>
+                        <ol class="list-decimal ml-5 mt-4 space-y-4 text-slate-700">
+                            <li>Crear un repositorio en GitHub con dos archivos: <code>app.py</code> (tu código) y <code>requirements.txt</code> (las librerías a instalar: pymongo, pandas, streamlit).</li>
+                            <li>Registrarse en Streamlit Cloud y vincular la cuenta de GitHub.</li>
+                            <li>Configurar los <strong>Secrets</strong> en Streamlit Cloud: Aquí pegaremos la URI de MongoDB para que nadie pueda ver nuestra contraseña en GitHub.</li>
+                        </ol>`,
+                image: "https://images.unsplash.com/photo-1547658719-da2b811691ea?q=80&w=800&auto=format&fit=crop",
+                concepts: ["Full-Stack App", "Streamlit Forms", "Streamlit Cloud", "Secrets Management", "Final Deploy"],
+                code: `# CÓDIGO FINAL ESTRUCTURADO (app.py)\nimport streamlit as st\nimport pymongo\nimport pandas as pd\n\nst.set_page_config(layout="wide")\nst.title("📈 Dashboard Analítico y CRUD - CBTis 134")\n\n# 1. OBTENER SECRETOS DE CONEXIÓN DE STREAMLIT CLOUD\nURI = st.secrets["MONGO_URI"] \nclient = pymongo.MongoClient(URI)\ndb = client.tienda_oxxo\n\n# 2. CONECTAR Y EXTRAER (Uso de caché para velocidad)\n@st.cache_data \ndef cargar_datos():\n    data = list(db.productos.find())\n    return pd.DataFrame(data)\n\ndf = cargar_datos()\n\n# 3. INTERFAZ CRUD EN STREAMLIT (Pestañas/Tabs)\ntab1, tab2 = st.tabs(["📊 Dashboard OXXO", "🏫 Gestión CBTis 134"])\n\nwith tab1:\n    st.subheader("Niveles de Stock por Producto")\n    st.bar_chart(df.set_index('nombre')['stock'])\n    st.dataframe(df) # Mostrar tabla completa\n\nwith tab2:\n    st.subheader("Agregar Nuevo Docente al Sistema")\n    with st.form("form_docente", clear_on_submit=True):\n        docente_nom = st.text_input("Nombre del Docente")\n        materia = st.selectbox("Especialidad", ["NoSQL", "Redes", "Web", "Ofimática"])\n        \n        # Botón de envío del formulario\n        submitted = st.form_submit_button("Registrar en Atlas")\n        if submitted:\n            # Inserta el registro real en la base de datos (CREATE)\n            client.cbtis134.docentes.insert_one({"nombre": docente_nom, "materia": materia})\n            st.success(f"¡El docente {docente_nom} fue guardado exitosamente en MongoDB!")`,
+                exercise: `<strong>🚀 Meta Final (Evaluación):</strong><br><br>
+                           <span class="step-pill">★</span> <strong>Integración Total:</strong> Debes presentar una URL pública de tu Dashboard creado en Streamlit Cloud conectado a tu Atlas.<br><br>
+                           <span class="step-pill">★</span> <strong>Requerimientos Visuales:</strong> La página debe mostrar una gráfica de tu inventario usando <code>st.bar_chart</code> o similar, reflejando datos reales de Mongo.<br><br>
+                           <span class="step-pill">★</span> <strong>CRUD Operativo:</strong> Tu dashboard debe tener al menos un formulario funcional (usando <code>st.form</code>) que permita registrar un nuevo alumno del CBTis 134 o un nuevo producto del OXXO y que muestre un mensaje de éxito.`
+            }
+        };
+
+        function switchWeek(num) {
+            // UI Update: Botones
+            for(let i=11; i<=15; i++) {
+                const btn = document.getElementById('tab'+i);
+                if(btn) btn.className = "week-tab text-slate-600 flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center hover:bg-white/50 transition";
+            }
+            document.getElementById('tab'+num).className = "week-tab active flex-1 min-w-[110px] py-4 rounded-xl font-bold text-xs uppercase flex flex-col items-center";
+
+            // Data Update
+            const d = contentData[num];
+            const container = document.getElementById('week-content');
+            
+            container.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    <div class="space-y-6 text-slate-800">
+                        <div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${d.concepts.map(c => `<span class="concept-badge"><i class="fas fa-code mr-1 opacity-50"></i>${c}</span>`).join('')}
+                            </div>
+                            <h2 class="text-3xl md:text-4xl font-black text-slate-900 leading-tight">${d.title}</h2>
+                            <p class="text-emerald-600 font-bold text-xs mt-2 uppercase tracking-widest italic border-l-2 border-emerald-600 pl-2">${d.subtitle}</p>
+                        </div>
+                        
+                        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 leading-relaxed theory-card">
+                            <h4 class="font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 flex items-center">
+                                <i class="fas fa-lightbulb mr-2 text-emerald-600"></i> Conceptos de Ingeniería
+                            </h4>
+                            <div class="text-[17px] space-y-4">
+                                ${d.theory}
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-700 p-8 rounded-3xl shadow-lg relative overflow-hidden text-white group border-b-8 border-emerald-900">
+                            <i class="fas fa-laptop-code absolute -right-6 -bottom-6 text-9xl opacity-10 transition-transform group-hover:scale-110"></i>
+                            <h4 class="font-black text-emerald-200 text-[10px] uppercase tracking-tighter mb-2">
+                                <i class="fas fa-vial mr-1"></i> Laboratorio de Desarrollo
+                            </h4>
+                            <div class="text-white font-bold text-sm italic leading-snug">${d.exercise}</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="rounded-3xl overflow-hidden shadow-2xl h-72 border-4 border-white relative group">
+                            <img src="${d.image}" alt="Imagen de soporte técnico" class="w-full h-full object-cover transition transform group-hover:scale-105 duration-1000" onerror="this.src='https://placehold.co/800x600/064e3b/ffffff?text=Data+Science+App'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 text-white">
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-70 mb-1">CBTis 134 • Fase de Integración</p>
+                                <p class="text-xl font-black italic tracking-tighter">Ciencia de Datos y Dashboards</p>
+                            </div>
+                        </div>
+
+                        <div class="code-container p-6 rounded-3xl shadow-2xl overflow-hidden">
+                            <div class="flex space-x-2 mb-6 border-b border-slate-800 pb-4">
+                                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                                <span class="text-[10px] text-slate-500 font-mono pl-3 tracking-widest uppercase italic font-bold">Python_Script.py</span>
+                            </div>
+                            <pre class="font-mono text-emerald-300 text-sm overflow-x-auto py-2 leading-relaxed"><code>${d.code}</code></pre>
+                            <button onclick="copyCode(this)" class="mt-8 w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black py-4 rounded-xl transition-all flex items-center justify-center space-x-2 shadow-lg active:scale-95 uppercase tracking-widest border border-emerald-400">
+                                <i class="fas fa-copy"></i> <span>Copiar Código de Ejemplo</span>
+                            </button>
+                        </div>
+                        
+                        <div class="p-4 bg-emerald-50 rounded-2xl flex items-center space-x-4 border border-emerald-100">
+                             <div class="bg-white p-3 rounded-xl shadow-sm"><i class="fas fa-layer-group text-emerald-500 text-xl"></i></div>
+                             <p class="text-[11px] font-bold text-slate-600 uppercase tracking-tight leading-tight italic">Referencia: Un sistema moderno conecta Bases de Datos masivas con visualizaciones interactivas.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.classList.remove('animate-content');
+            void container.offsetWidth; 
+            container.classList.add('animate-content');
+        }
+
+        function copyCode(btn) {
+            const code = btn.previousElementSibling.innerText;
+            const temp = document.createElement('textarea');
+            temp.value = code;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> <span>¡CÓDIGO COPIADO!</span>';
+            btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+            setTimeout(() => { 
+                btn.innerHTML = original; 
+                btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+            }, 2000);
+        }
+
+        window.onload = () => switchWeek(11);
+    </script>
+</body>
+</html>
